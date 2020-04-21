@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/his_java1?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+mybatis:
+  type-aliases-package: com.neuedu.entity
+  #告诉mybatis的所有Mapper文件的位置
+  mapperLocations:  classpath:com/neuedu/mapper/*.xml
+
+
+#mapper:
+#  mappers:
+#    - tk.mybatis.springboot.util.MyMapper
+#  not-empty: false
+#  identity: MYSQL
+
+# 配置PageHelper插件
+# https://github.com/pagehelper/Mybatis-PageHelper/blob/master/README_zh.md
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
