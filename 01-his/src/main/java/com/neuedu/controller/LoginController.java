@@ -33,6 +33,14 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
+    /**
+     * 登录
+     * @param userName
+     * @param password
+     * @param validaCode
+     * @param session
+     * @return
+     */
     @RequestMapping("login")
     public Map login(String userName, String password, String validaCode, HttpSession session) {
         boolean isLogin = false;
@@ -187,12 +195,14 @@ public class LoginController {
     private static Color getRandomColor() {
 
         Random ran = new Random();
-
         Color color = new Color(ran.nextInt(256),
-
         ran.nextInt(256), ran.nextInt(256));
-
         return color;
+    }
 
+    @RequestMapping("logout")
+    public void logout( HttpSession session ,HttpServletResponse response) throws IOException {
+        session.invalidate();
+        response.sendRedirect("login.html");
     }
 }
