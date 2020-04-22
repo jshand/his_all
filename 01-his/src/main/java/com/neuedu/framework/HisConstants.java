@@ -16,4 +16,15 @@ public class HisConstants {
     public static final String VERIFY_CODE = "verifyCode";
 
 
+
+
+    //表中记录是否删除的状态  1 正常，0已删除
+    public static final String RECORD_IS_DEL_FALSE = "1";
+    public static final String RECORD_IS_DEL_TRUE = "0";
+
+
+    //常数项表的类别：性别
+    public static final String CONSTANTS_TYP_XB = "XB";
+
+
 }
