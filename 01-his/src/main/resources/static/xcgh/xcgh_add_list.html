@@ -141,18 +141,18 @@
 				<div class="formControls col-sm-2">
 
 					<div class="radio-box">
-						<input name="sfxyblb" type="radio" id="blb-1" checked>
+						<input name="sfxyblb" type="radio" id="blb-1"  value="Y">
 						<label for="blb-1">是</label>
 					</div>
 					<div class="radio-box">
-						<input type="radio" id="blb-2" name="sfxyblb">
+						<input type="radio" id="blb-2" name="sfxyblb" checked value="N">
 						<label for="blb-2">否</label>
 					</div>
 				</div>
 
 				<label class="form-label  col-sm-1">应收金额：</label>
 				<div class="formControls col-sm-2">
-					<input type="text" name="" id="" placeholder="应收金额" value="" class="input-text " >
+					<input type="text" name="" id="cost" placeholder="应收金额" value="" readonly class="input-text " >
 				</div>
 			</div>
 
@@ -216,7 +216,27 @@
 				loadDoctor();
 			}
 		})
+
+
+		$("#level").change(function(){
+			calCost();
+		})
+
+
+		$("input[name='sfxyblb']").click(function(){
+			calCost();
+		});
 	})
+
+	function calCost(){
+		var cost =$("#level").find("option:selected").attr('cost');
+		var costBlb = $("input[name='sfxyblb']:checked").val() == 'Y'?1:0;
+		if(cost && cost!=''){
+			$("#cost").val(parseFloat(cost) + parseFloat(costBlb));
+		}else{
+			$("#cost").val(null);
+		}
+	}
 
 	/**
 	 * 初始化医生列表
