@@ -23,7 +23,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(user!= null){//已经登录的用户，
             return true;
         }else{
-            response.sendRedirect("login.html");
+            //重定向从上下文开始找 login.html
+            response.sendRedirect(request.getContextPath()+"/login.html");
         }
 
         return false;
