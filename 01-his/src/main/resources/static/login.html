@@ -43,7 +43,7 @@
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <input class="input-text size-L" name="validaCode" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:235px;">
-          <img src="getValidateCode" id="validateImage" width="120px" ><!-- <a id="kanbuq" href="javascript:;">看不清，换一张</a> --></div>
+          <img src="getValidateCode" id="validateImage" width="120px" style="cursor: pointer" ><!-- <a id="kanbuq" href="javascript:;">看不清，换一张</a> --></div>
       </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
@@ -92,9 +92,8 @@
 
       $("#validateImage").click(function(){
           var src = $(this).attr('src');
-          if(src.contain("?")){
-            src.split('?');
-            src = src[0];
+          if(src.indexOf("?") != -1){
+            src = src.split('?')[0];
           }
           $(this).attr('src',src +"?_t="+Math.random() );
       })
