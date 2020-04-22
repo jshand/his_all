@@ -16,7 +16,9 @@ public class HisConstants {
     public static final String VERIFY_CODE = "verifyCode";
 
 
-
+    //是否
+    public static final String YES = "Y";
+    public static final String NO = "N";
 
     //表中记录是否删除的状态  1 正常，0已删除
     public static final String RECORD_IS_DEL_FALSE = "1";
@@ -27,4 +29,10 @@ public class HisConstants {
     public static final String CONSTANTS_TYP_XB = "XB";
 
 
+    //病历问诊状态  状态:待诊、已接诊、已问诊、诊毕、 退号
+    public static final String MEDICAL_RECORD_STATUS_DZ = "1";
+    public static final String MEDICAL_RECORD_STATUS_YJZ = "2";
+    public static final String MEDICAL_RECORD_STATUS_YWZ = "3";
+    public static final String MEDICAL_RECORD_STATUS_ZYB = "4";
+    public static final String MEDICAL_RECORD_STATUS_TH  = "5";
 }

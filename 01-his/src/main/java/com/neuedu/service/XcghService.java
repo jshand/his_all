@@ -1,17 +1,13 @@
 package com.neuedu.service;
 
-import com.neuedu.entity.ConstantsExample;
-import com.neuedu.entity.Dept;
-import com.neuedu.entity.DeptExample;
-import com.neuedu.entity.DoctorLevel;
+import com.neuedu.entity.*;
 import com.neuedu.framework.HisConstants;
-import com.neuedu.mapper.ConstantsMapper;
-import com.neuedu.mapper.DeptMapper;
-import com.neuedu.mapper.DoctorLevelMapper;
-import com.neuedu.mapper.XcghExtMapper;
+import com.neuedu.mapper.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +37,10 @@ public class XcghService {
 
     @Autowired
     XcghExtMapper xcghExtMapper;
+
+    @Autowired
+    MedicalRecordMapper medicalRecordMapper;
+
     /**
      * 初始化页面
      * @return
@@ -73,5 +73,29 @@ public class XcghService {
     }
 
 
+    /**
+     * 挂号保存
+     * @param mr 接收到 挂号问诊信息
+     * @return
+     */
+    public boolean ghbc(MedicalRecord mr) {
 
+        MedicalRecordWithBLOBs mrBlob = new MedicalRecordWithBLOBs();
+
+        BeanUtils.copyProperties(mr,mrBlob);
+
+        //设置挂号状态为待诊
+        mrBlob.setStatus(HisConstants.MEDICAL_RECORD_STATUS_DZ);
+        //保存之前计算一次 应收金额,根据挂号级别计算
+        DoctorLevel doctorLevel = doctorLevelMapper.selectByPrimaryKey(mrBlob.getLevelId());
+        BigDecimal cost = doctorLevel.getCost();
+        //如果需要病历本额外加1
+        if(HisConstants.YES.equals( mrBlob.getIsBook())){
+            cost.add(new BigDecimal(1));
+        }
+        mrBlob.setAmount(cost); //应收金额
+
+        int count = medicalRecordMapper.insertSelective(mrBlob);
+        return count>0;
+    }
 }

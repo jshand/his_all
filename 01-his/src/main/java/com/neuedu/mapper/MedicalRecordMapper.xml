@@ -24,6 +24,7 @@
     <result column="is_del" jdbcType="VARCHAR" property="isDel" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.neuedu.entity.MedicalRecordWithBLOBs">
     <!--
       WARNING - @mbg.generated

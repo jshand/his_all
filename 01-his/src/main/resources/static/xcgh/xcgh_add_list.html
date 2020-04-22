@@ -42,7 +42,7 @@
 
 
 	<div class="text-c">
-		<form action="" method="post" class="form form-horizontal" id="form-article-add">
+		<form action=""   class="form form-horizontal" id="xcghForm">
 
 			<div class="row cl">
 				<label class="form-label  col-sm-1">病历号：</label>
@@ -52,14 +52,14 @@
 
 				<label class="form-label  col-sm-1">姓名：</label>
 				<div class="formControls col-sm-2">
-					<input type="text" name="" id="" placeholder="姓名" value="" class="input-text " >
+					<input type="text" name="name" id="" placeholder="姓名" value="" class="input-text " >
 				</div>
 
 				<label class="form-label  col-sm-1">性别：</label>
 				<div class="formControls  col-sm-2">
 
 					<span class="select-box">
-						<select name="" class="select" id="gender">
+						<select name="gender" class="select" id="gender">
 							<option value="">--请选择--</option>
 <!--							<option value="0">男</option>-->
 <!--							<option value="1">女</option>-->
@@ -70,7 +70,7 @@
 
 				<label class="form-label  col-sm-1">年龄：</label>
 				<div class="formControls  col-sm-2">
-					<input type="text" name="" id="" placeholder="年龄" value="" class="input-text " >
+					<input type="text" name="age" id="" placeholder="年龄" value="" class="input-text " >
 				</div>
 
 			</div>
@@ -78,17 +78,17 @@
 			<div class="row cl">
 				<label class="form-label  col-sm-1">出生日期：</label>
 				<div class="formControls col-sm-2">
-					<input type="text" onfocus="WdatePicker()" placeholder="出生日期" class="input-text Wdate" >
+					<input type="text" name="birthday" onfocus="WdatePicker()" placeholder="出生日期" class="input-text Wdate" >
 				</div>
 
 				<label class="form-label  col-sm-1">身份证号：</label>
 				<div class="formControls col-sm-5">
-					<input type="text" name="" id="" placeholder="身份证号" value="" class="input-text " >
+					<input type="text" name="idCard" id="" placeholder="身份证号" value="" class="input-text " >
 				</div>
 
 				<label class="form-label  col-sm-1">看诊日期：</label>
 				<div class="formControls  col-sm-2">
-					<input type="text" onfocus="WdatePicker()" placeholder="看诊日期" class="input-text Wdate" >
+					<input type="text" name="visitingTime" onfocus="WdatePicker()" placeholder="看诊日期" class="input-text Wdate" >
 				</div>
 
 			</div>
@@ -97,13 +97,13 @@
 			<div class="row cl">
 				<label class="form-label  col-sm-1">家庭住址：</label>
 				<div class="formControls col-sm-2">
-					<input type="text" name="" id="" placeholder="家庭住址" value="" class="input-text " >
+					<input type="text" name="address" id="" placeholder="家庭住址" value="" class="input-text " >
 				</div>
 
 				<label class="form-label  col-sm-1">挂号科室：</label>
 				<div class="formControls col-sm-2">
 					<span class="select-box">
-						<select name="" class="select" id="dept">
+						<select name="deptCode" class="select" id="dept">
 							<option value="">--请选择--</option>
 <!--							<option value="0">心内科</option>-->
 <!--							<option value="1">呼吸科</option>-->
@@ -116,7 +116,7 @@
 				<label class="form-label  col-sm-1">挂号级别：</label>
 				<div class="formControls col-sm-2">
 					<span class="select-box">
-						<select name="" class="select"  id="level">
+						<select name="levelId" class="select"  id="level">
 							<option value="">--请选择--</option>
 <!--							<option value="0">专家诊</option>-->
 <!--							<option value="0">普通诊</option>-->
@@ -127,7 +127,7 @@
 				<label class="form-label  col-sm-1">看诊医生：</label>
 				<div class="formControls col-sm-2">
 					<span class="select-box">
-						<select name="" class="select" id="doctor">
+						<select name="docId" class="select" id="doctor">
 							<option value="">--请选择--</option>
 <!--							<option value="0">扁鹊</option>-->
 <!--							<option value="0">李时珍</option>-->
@@ -141,11 +141,11 @@
 				<div class="formControls col-sm-2">
 
 					<div class="radio-box">
-						<input name="sfxyblb" type="radio" id="blb-1"  value="Y">
+						<input name="isBook" type="radio" id="blb-1"  value="Y">
 						<label for="blb-1">是</label>
 					</div>
 					<div class="radio-box">
-						<input type="radio" id="blb-2" name="sfxyblb" checked value="N">
+						<input type="radio" id="blb-2" name="isBook" checked value="N">
 						<label for="blb-2">否</label>
 					</div>
 				</div>
@@ -159,7 +159,7 @@
 
 			<div class="row cl">
 				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-					<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe617;</i> 挂号</button>
+					<button onClick="gh_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe617;</i> 挂号</button>
 				</div>
 			</div>
 		</form>
@@ -223,14 +223,14 @@
 		})
 
 
-		$("input[name='sfxyblb']").click(function(){
+		$("input[name='isBook']").click(function(){
 			calCost();
 		});
 	})
 
 	function calCost(){
 		var cost =$("#level").find("option:selected").attr('cost');
-		var costBlb = $("input[name='sfxyblb']:checked").val() == 'Y'?1:0;
+		var costBlb = $("input[name='isBook']:checked").val() == 'Y'?1:0;
 		if(cost && cost!=''){
 			$("#cost").val(parseFloat(cost) + parseFloat(costBlb));
 		}else{
@@ -290,9 +290,22 @@
 
 		})
 
-
-
 	}
+
+
+	/**
+	 * 挂号保存
+	 */
+	function gh_submit(){
+		let url = '/xcgh/ghbc';
+		$.get(url,$('#xcghForm').serialize(),function(data){
+			if(data.success){
+				alert('提示保存成功...');
+			}
+		})
+	}
+
+
 
 //找到表格加载服务器端的数据
 $('#roleTab').dataTable({
