@@ -1,12 +1,12 @@
 package com.neuedu.mapper;
 
 import com.neuedu.HisApplication;
-import com.neuedu.entity.Constants;
-import com.neuedu.entity.ConstantsType;
-import com.neuedu.entity.Dept;
+import com.neuedu.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -126,6 +126,74 @@ class BaseDateMapperTest {
             dept.setDeptType("1"); //1 治疗科室、2 辅助科室
             deptMapper.insertSelective(dept);
         }
+
+    }
+
+
+    @Autowired
+    DoctorLevelMapper doctorLevelMapper;
+    /**
+     * 准备挂号级别（专家诊、普通诊）
+     */
+    @Test
+    void pdDoctorLevel() {
+        DoctorLevel l1 = new DoctorLevel();
+        l1.setLevelName("普通诊");
+        l1.setCost(new BigDecimal(8));
+        doctorLevelMapper.insertSelective(l1);
+
+        DoctorLevel l2 = new DoctorLevel();
+        l2.setLevelName("专家诊");
+        l2.setCost(new BigDecimal(100));
+        doctorLevelMapper.insertSelective(l2);
+    }
+
+
+
+    @Autowired
+    DoctorMapper doctorMapper;
+    /**
+     * 准备医生的信息
+     */
+    @Test
+    void pdDoctor() {
+        Doctor d1 = new Doctor();
+        d1.setDeptCode(1);
+        d1.setDocName("王旭");
+        d1.setGender("2");
+        d1.setLevelId(2);
+
+
+
+        Doctor d2 = new Doctor();
+        d2.setDeptCode(1);
+        d2.setDocName("李姝明");
+        d2.setGender("1");
+        d2.setLevelId(1);
+
+
+        Doctor d3 = new Doctor();
+        d3.setDeptCode(11);
+        d3.setDocName("李建伟");
+        d3.setGender("1");
+        d3.setLevelId(1);
+
+
+        Doctor d4 = new Doctor();
+        d4.setDeptCode(18);
+        d4.setDocName("王雨欣");
+        d4.setGender("2");
+        d4.setLevelId(2);
+
+        doctorMapper.insertSelective(d1);
+        doctorMapper.insertSelective(d2);
+        doctorMapper.insertSelective(d3);
+        doctorMapper.insertSelective(d4);
+
+
+
+
+
 
     }
 }
