@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,11 +92,38 @@ public class XcghService {
         BigDecimal cost = doctorLevel.getCost();
         //如果需要病历本额外加1
         if(HisConstants.YES.equals( mrBlob.getIsBook())){
-            cost.add(new BigDecimal(1));
+            cost = cost.add(new BigDecimal(1));
         }
         mrBlob.setAmount(cost); //应收金额
 
         int count = medicalRecordMapper.insertSelective(mrBlob);
         return count>0;
+    }
+
+
+    public static void main(String[] args) {
+        BigDecimal cost = new BigDecimal(100);
+        BigDecimal newCost = cost.add(new BigDecimal(5));
+
+        System.out.println(cost.intValue());
+        System.out.println(newCost.intValue());
+
+    }
+
+    /**
+     * 查询一周内挂号的数据
+     * @return
+     */
+    public List<MedicalRecord> listMedeiacalRecord() {
+
+
+        //查询一周之内的数据
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH,-7);
+
+        MedicalRecordExample ex = new MedicalRecordExample();
+        ex.createCriteria().andCreateTimeGreaterThanOrEqualTo(now.getTime());
+
+        return medicalRecordMapper.selectByExample(ex);
     }
 }
