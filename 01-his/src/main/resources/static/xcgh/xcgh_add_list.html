@@ -127,7 +127,7 @@
 				<label class="form-label  col-sm-1">看诊医生：</label>
 				<div class="formControls col-sm-2">
 					<span class="select-box">
-						<select name="" class="select">
+						<select name="" class="select" id="doctor">
 							<option value="">--请选择--</option>
 <!--							<option value="0">扁鹊</option>-->
 <!--							<option value="0">李时珍</option>-->
@@ -200,7 +200,44 @@
 	//当页面加载完，dom元素出现
 	$(function(){
 		initPage();
+
+		//当部门、挂号级别发生变化，重新查询看诊医生
+		$("#dept,#level").change(function(){
+			var dept = $("#dept").val();
+			var level = $("#level").val();
+
+			//先清空现在的医生
+			$("#doctor").empty();
+			$("#doctor").append("<option value=''>--请选择--</option>");
+
+
+			//当部门和级别有选中的值，则重新查询
+			if(dept && level && dept!='' && level != ''){
+				loadDoctor();
+			}
+		})
 	})
+
+	/**
+	 * 初始化医生列表
+	 */
+
+	function loadDoctor(){
+		var url = "/doctor/list";
+		$.ajax(url,{
+			data:{
+				deptCode:$("#dept").val(),
+				levelId:$("#level").val()
+			},
+			success:function(data){
+				$(data).each(function(index,doctor){
+					$("#doctor").append("<option value='"+doctor.docId+"'>"+doctor.docName+"</option>");
+
+				})
+			}
+
+		})
+	}
 
 	/**
 	 * 初始化页面信息
