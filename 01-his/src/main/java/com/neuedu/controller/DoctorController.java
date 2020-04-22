@@ -22,7 +22,12 @@ public class DoctorController {
     @Autowired
     DoctorService doctorService;
 
-    //doctor/list
+    /**
+     * 根据 部门编号、医生级别查询 可看诊的医生
+     * @param deptCode 部门编号
+     * @param levelId  看着级别
+     * @return
+     */
     @RequestMapping("list")
     public List<Doctor> list(Integer deptCode,Integer levelId){
         return doctorService.list(deptCode,levelId);

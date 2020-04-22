@@ -8,6 +8,7 @@ import com.neuedu.framework.HisConstants;
 import com.neuedu.mapper.ConstantsMapper;
 import com.neuedu.mapper.DeptMapper;
 import com.neuedu.mapper.DoctorLevelMapper;
+import com.neuedu.mapper.XcghExtMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,9 @@ public class XcghService {
     @Autowired
     DoctorLevelMapper doctorLevelMapper;
 
+
+    @Autowired
+    XcghExtMapper xcghExtMapper;
     /**
      * 初始化页面
      * @return
@@ -56,8 +60,11 @@ public class XcghService {
         //3 挂号级别列表
         List<DoctorLevel> levelList = doctorLevelMapper.selectByExample(null);
 
+        //4 最新的病历号
+        long maxMedicalNo = xcghExtMapper.selectMaxMedicalNo();
 
         Map result = new HashMap();
+        result.put("maxMedicalNo",maxMedicalNo);
         result.put("xbList",xbList);
         result.put("deptList",deptList);
         result.put("levelList",levelList);

@@ -47,7 +47,7 @@
 			<div class="row cl">
 				<label class="form-label  col-sm-1">病历号：</label>
 				<div class="formControls col-sm-2">
-					<input type="text" name="" id="" placeholder="病历号" value="" class="input-text " >
+					<input type="text" name="" id="medicalId" placeholder="病历号" value="" class="input-text " >
 				</div>
 
 				<label class="form-label  col-sm-1">姓名：</label>
@@ -269,6 +269,9 @@
 		$.ajax(url,{
 			dataType:'json',
 			success:function(data){
+				//设置当前最新的病历号
+				$("#medicalId").val(data.maxMedicalNo);
+
 				//循环生成性别列表
 				$(data.xbList).each(function(i,el){
 					$("#gender").append("<option value='"+el.consCode+"'>"+el.consName+"</option>");
@@ -278,8 +281,6 @@
 				$(data.deptList).each(function(i,el){
 					$("#dept").append("<option value='"+el.deptCode+"'>"+el.deptName+"</option>");
 				})
-
-
 
 				//循环生成级别列表
 				$(data.levelList).each(function(i,el){
