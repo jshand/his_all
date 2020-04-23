@@ -31,23 +31,26 @@
 <div class="page-container">
 	<div class="text-c">
 		病历号:
-		<input type="text" class="input-text" id="" name="" style="width:150px">
+		<input type="text" class="input-text" id="medicalId" name="" style="width:150px">
 		患者姓名:
-		<input type="text" class="input-text" id="" name="" style="width:150px">
+		<input type="text" class="input-text" id="name" name="" style="width:150px">
 		患者身份证号:
-		<input type="text" class="input-text" id="" name="" style="width:150px">
+		<input type="text" class="input-text" id="idCard" name="" style="width:150px">
 
 
-		<button type="submit" class="btn btn-primary radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+		<button type="button" class="btn btn-primary radius" id="" name="" onclick="queryMedical()"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
 	</div>
 
 	<div class="mt-20">
 		<table id="medicalRecordTab" class="table table-border table-bordered table-bg table-sort">
 			<thead>
 				<tr class="text-c">
+					<th width="70">病历号</th>
 					<th width="70">患者姓名</th>
 					<th width="70">年龄</th>
+					<th width="70">身份证号</th>
 					<th width="100">看诊时间</th>
+					<th width="100">操作</th>
 				</tr>
 			</thead>
 		</table>
@@ -66,17 +69,39 @@
 <script type="text/javascript">
 
 //找到表格加载服务器端的数据
-$('#medicalRecordTab').dataTable({
+var medicalTab = $('#medicalRecordTab').dataTable({
 	"processing": true,  //显示是否正在处理中
 	"serverSide": true,  //表示数据重服务器中加载
 	"paging":true,
-	"ajax": "/xcgh/tuiHaoPageList",  //表示加载数据的路径,
+	"ajax":"/xcgh/tuiHaoPageList",
+		/*{
+		'url':"/xcgh/tuiHaoPageList",
+		"dataSrc" : "data",
+		"data":function(srcData){
+
+			var param = { aaa:'1111' 	}
+			$.extend(srcData,param);
+			$.extend( true, srcData, param );
+			return srcData;
+		}
+	},*/  //表示加载数据的路径,
 	"columns":[  //每行的列 取值的方式
+		{ "data": "medicalId" },
 		{ "data": "name" },
 		{ "data": "age" },
+		{ "data": "idCard" },
 		{ "data": "visitingTime",render:function(data,type,row,meta){
 				return row.visitingTime.replace('00:00:00','');
+			} },
+		{ "data": "status",render:function(status, type, row, meta){
+			//根据状态进行判断
+				if(status == 1){
+					return "可以退号"
+				}else{
+					return "";
+				}
 			} }
+
 
 	]
 });
@@ -98,6 +123,13 @@ function del(id){
 	alert("待删除的"+id);
 }
 
+function queryMedical(){
+	var tab = $('#medicalRecordTab').DataTable();
+
+	tab.settings()[0].ajax.data={'aa':'bb'};
+	tab.ajax.reload();
+
+}
 
 </script>
 </body>
