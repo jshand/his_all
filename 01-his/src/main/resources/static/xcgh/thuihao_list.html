@@ -69,7 +69,7 @@
 <script type="text/javascript">
 
 //找到表格加载服务器端的数据
-var medicalTab = $('#medicalRecordTab').dataTable({
+$('#medicalRecordTab').dataTable({
 	"processing": true,  //显示是否正在处理中
 	"serverSide": true,  //表示数据重服务器中加载
 	"paging":true,
@@ -101,9 +101,13 @@ var medicalTab = $('#medicalRecordTab').dataTable({
 					return "";
 				}
 			} }
+	],
 
-
-	]
+	fnServerParams : function (aoData) {
+		aoData.medicalId = $("#medicalId").val();
+		aoData.name = $("#name").val();
+		aoData.idCard = $("#idCard").val();
+	}
 });
 
 
@@ -124,11 +128,7 @@ function del(id){
 }
 
 function queryMedical(){
-	var tab = $('#medicalRecordTab').DataTable();
-
-	tab.settings()[0].ajax.data={'aa':'bb'};
-	tab.ajax.reload();
-
+	$('#medicalRecordTab').DataTable().ajax.reload();
 }
 
 </script>

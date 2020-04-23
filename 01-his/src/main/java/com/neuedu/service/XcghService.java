@@ -144,17 +144,17 @@ public class XcghService {
         MedicalRecordExample ex = new MedicalRecordExample();
         MedicalRecordExample.Criteria c = ex.createCriteria();
         c.andCreateTimeGreaterThanOrEqualTo(now.getTime());
-        //如果存在病历号，应该模糊查询
+        //如果存在病历号，完全匹配
         if(mr.getMedicalId()!= null){
             c.andMedicalIdEqualTo(mr.getMedicalId());
         }
 
-        //模糊查询 患者姓名
+        //模糊查询 患者姓名 模糊查询
         if(StringUtils.isNotEmpty(mr.getName())){
             c.andNameLike("%"+mr.getName()+"%");
         }
 
-        //模糊查询身份证号
+        //模糊查询身份证号 模糊查询
         if(StringUtils.isNotEmpty(mr.getIdCard())){
             c.andIdCardLike("%"+mr.getIdCard()+"%");
         }
