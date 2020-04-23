@@ -3,6 +3,7 @@ package com.neuedu.service;
 import com.neuedu.entity.*;
 import com.neuedu.framework.HisConstants;
 import com.neuedu.mapper.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -123,6 +124,40 @@ public class XcghService {
 
         MedicalRecordExample ex = new MedicalRecordExample();
         ex.createCriteria().andCreateTimeGreaterThanOrEqualTo(now.getTime());
+
+        return medicalRecordMapper.selectByExample(ex);
+    }
+
+
+
+    /**
+     * 退号时查询一周内挂号的数据
+     * @return
+     */
+    public List<MedicalRecord> tuiHaolistMedeiacalRecord(  MedicalRecord mr) {
+
+
+        //查询一周之内的数据
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH,-7);
+
+        MedicalRecordExample ex = new MedicalRecordExample();
+        MedicalRecordExample.Criteria c = ex.createCriteria();
+        c.andCreateTimeGreaterThanOrEqualTo(now.getTime());
+        //如果存在病历号，应该模糊查询
+        if(mr.getMedicalId()!= null){
+            c.andMedicalIdEqualTo(mr.getMedicalId());
+        }
+
+        //模糊查询 患者姓名
+        if(StringUtils.isNotEmpty(mr.getName())){
+            c.andNameLike("%"+mr.getName()+"%");
+        }
+
+        //模糊查询身份证号
+        if(StringUtils.isNotEmpty(mr.getIdCard())){
+            c.andIdCardLike("%"+mr.getIdCard()+"%");
+        }
 
         return medicalRecordMapper.selectByExample(ex);
     }

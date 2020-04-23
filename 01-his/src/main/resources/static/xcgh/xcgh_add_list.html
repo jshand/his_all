@@ -32,7 +32,7 @@
 	<span class="c-gray en">&gt;</span> 挂号收费 <span class="c-gray en">&gt;</span>
 	现场挂号
 	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
-	   href="../javascript:location.replace(location.href);" title="刷新" >
+	   href="javascript:location.replace(location.href);" title="刷新" >
 		<i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
@@ -298,10 +298,13 @@
 	 */
 	function gh_submit(){
 		let url = '/xcgh/ghbc';
+
 		$.get(url,$('#xcghForm').serialize(),function(data){
 			if(data.success){
-				alert('提示保存成功...');
-				window.location.href = window.location.href;
+				layer.alert('挂号成功..',function(index){
+					layer.close(index);
+					window.location.href = window.location.href;
+				});
 			}
 		})
 	}
@@ -318,7 +321,9 @@ $('#roleTab').dataTable({
 
 		{ "data": "name" },
 		{ "data": "age" },
-		{ "data": "visitingTime" }
+		{ "data": "visitingTime",render:function(data,type,row,meta){
+				return row.visitingTime.replace('00:00:00','');
+			} }
 
 	]
 });

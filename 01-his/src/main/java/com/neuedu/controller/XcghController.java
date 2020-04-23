@@ -81,4 +81,33 @@ public class XcghController {
         return pageReuslt;
     }
 
+
+    /**
+     * 退号时查询 患者列表
+     * @param start
+     * @param pageSize
+     * @param draw
+     * @param mr
+     * @return
+     */
+    @RequestMapping("tuiHaoPageList")
+    public Map tuiHaoPageList(
+            @RequestParam(defaultValue = "0") int start,
+            @RequestParam(value ="length",defaultValue = "10") int pageSize,
+            int draw    ,
+            MedicalRecord mr){
+
+        Map pageReuslt = new HashMap();
+
+        Page<MedicalRecord> page = PageHelper.offsetPage(start,pageSize);
+
+        List<MedicalRecord> data = xcghService.tuiHaolistMedeiacalRecord(mr);
+
+        pageReuslt.put("draw",draw);
+        pageReuslt.put("recordsTotal", page.getTotal());
+        pageReuslt.put("recordsFiltered", page.getTotal());
+        pageReuslt.put("data",data);
+
+        return pageReuslt;
+    }
 }
