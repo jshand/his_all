@@ -114,13 +114,13 @@ $('#medicalRecordTab').dataTable({
 			} },
 		{ "data": "status",render:function(status, type, row, meta){
 			//根据状态进行判断
-				if(status == 1){
-					var id = row.medicalId;
-					return "<button type=\"button\" class=\"btn btn-primary radius\" id=\"\" name=\"\" onclick=\"tuiHao('"+id+"')\"><i class=\"Hui-iconfont\">&#xe6de;</i> 退号</button>";
-				}else{
-					return "";
-				}
-			} }
+			if(status == 1){
+				var id = row.medicalId;
+				return "<button type=\"button\" class=\"btn btn-primary radius\" id=\"\" name=\"\" onclick=\"tuiHao('"+id+"')\"><i class=\"Hui-iconfont\">&#xe6de;</i> 退号</button>";
+			}else{
+				return "无";
+			}
+		} }
 	],
 
 	fnServerParams : function (aoData) {
