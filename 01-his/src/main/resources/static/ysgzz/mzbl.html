@@ -119,8 +119,8 @@
         data: {
             simpleData: {
                 enable: true,
-                idKey: "id",
-                pIdKey: "pId",
+                idKey: "medicalId",
+                pIdKey: "docId",
                 rootPId: ""
             }
         },
@@ -163,12 +163,16 @@
     }
 
     $(document).ready(function () {
-        var t = $("#treeDemo");
-        t = $.fn.zTree.init(t, setting, zNodes);
-        demoIframe = $("#testIframe");
-        //demoIframe.on("load", loadReady);
-        var zTree = $.fn.zTree.getZTreeObj("tree");
-        //zTree.selectNode(zTree.getNodeByParam("id",'11'));
+
+    	$.get('/mzbl/queryMedicalRecord',function(nodes){
+			var t = $("#treeDemo");
+			t = $.fn.zTree.init(t, setting, nodes);
+
+
+			var zTree = $.fn.zTree.getZTreeObj("tree");
+		})
+
+
     });
 </script>
 </body>
