@@ -4,8 +4,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.neuedu.entity.MedicalRecord;
 import com.neuedu.entity.Role;
+import com.neuedu.framework.BaseController;
 import com.neuedu.service.XcghService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("xcgh")
-public class XcghController {
+public class XcghController extends BaseController {
 
     @Autowired
     XcghService xcghService;
@@ -50,12 +52,9 @@ public class XcghController {
 
         boolean success = xcghService.ghbc(mr);
 
-
-        Map result = new HashMap();
-        result.put("success",success);
-
-        return result;
+        return super.ajaxSucess(success);
     }
+
 
 
 
@@ -110,4 +109,15 @@ public class XcghController {
 
         return pageReuslt;
     }
+
+    //http://127.0.0.1/xcgh/tuiHao/id
+    @RequestMapping("tuiHao/{id}")
+    public Map tuiHao(@PathVariable(name="id") Integer medicalId){
+
+        boolean success = xcghService.tuiHao(medicalId);
+
+        return super.ajaxSucess(success);
+    }
+
+
 }

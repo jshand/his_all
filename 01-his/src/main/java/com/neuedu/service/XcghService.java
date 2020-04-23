@@ -136,7 +136,6 @@ public class XcghService {
      */
     public List<MedicalRecord> tuiHaolistMedeiacalRecord(  MedicalRecord mr) {
 
-
         //查询一周之内的数据
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH,-7);
@@ -160,5 +159,24 @@ public class XcghService {
         }
 
         return medicalRecordMapper.selectByExample(ex);
+    }
+
+    /**
+     * 退号，将看诊状态改变为已退号
+     * @param medicalId
+     * @return
+     */
+    public boolean tuiHao(Integer medicalId) {
+//        MedicalRecordWithBLOBs medicalRecord = medicalRecordMapper.selectByPrimaryKey(medicalId);
+//        medicalRecord.setStatus(HisConstants.MEDICAL_RECORD_STATUS_TH);
+
+        MedicalRecordWithBLOBs record = new MedicalRecordWithBLOBs();
+        record.setMedicalId(medicalId);
+        record.setStatus(HisConstants.MEDICAL_RECORD_STATUS_TH);
+
+
+        int count = medicalRecordMapper.updateByPrimaryKeySelective(record);
+
+        return count>0;
     }
 }

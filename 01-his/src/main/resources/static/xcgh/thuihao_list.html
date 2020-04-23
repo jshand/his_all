@@ -50,6 +50,7 @@
 					<th width="70">年龄</th>
 					<th width="70">身份证号</th>
 					<th width="100">看诊时间</th>
+					<th width="100">看诊状态</th>
 					<th width="100">操作</th>
 				</tr>
 			</thead>
@@ -93,10 +94,29 @@ $('#medicalRecordTab').dataTable({
 		{ "data": "visitingTime",render:function(data,type,row,meta){
 				return row.visitingTime.replace('00:00:00','');
 			} },
+		{ "data": "status",render:function(status){
+				var stat = '未知';
+				//待诊、已接诊、已问诊、诊毕、 退号
+				if(status ==1 ){
+					stat = "待诊";
+				}else if(status == 2){
+					stat = "已接诊";
+				}else if(status == 3){
+					stat = "已问诊";
+				}else if(status == 4){
+					stat = "诊毕";
+				}else if(status == 5){
+					stat = "退号";
+				}
+
+
+				return stat;
+			} },
 		{ "data": "status",render:function(status, type, row, meta){
 			//根据状态进行判断
 				if(status == 1){
-					return "可以退号"
+					var id = row.medicalId;
+					return "<button type=\"button\" class=\"btn btn-primary radius\" id=\"\" name=\"\" onclick=\"tuiHao('"+id+"')\"><i class=\"Hui-iconfont\">&#xe6de;</i> 退号</button>";
 				}else{
 					return "";
 				}
@@ -110,6 +130,17 @@ $('#medicalRecordTab').dataTable({
 	}
 });
 
+
+function tuiHao(medicalId){
+	$.get('/xcgh/tuiHao/'+medicalId,function(data){
+		if(data.success){
+			layer.alert('退号成功..',function(index){
+				layer.close(index);
+				queryMedical();
+			});
+		}
+	})
+}
 
 function edit(id){
 	var url="./product-add.html";
