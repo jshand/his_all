@@ -61,14 +61,14 @@
 					<div class="row cl">
 						<label class="form-label  col-sm-3">主诉：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="complaint" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="complaint" id="complaint"  cols=""  rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
 					<div class="row cl">
 						<label class="form-label  col-sm-3">现病史：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="cmHisotry" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="cmHisotry" id="cmHisotry"   cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
@@ -76,7 +76,7 @@
 					<div class="row cl">
 						<label class="form-label  col-sm-3">现病治疗情况：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="cmCure" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="cmCure" id="cmCure"   cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
@@ -84,14 +84,14 @@
 					<div class="row cl">
 						<label class="form-label  col-sm-3">既往史：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="pastHistory" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="pastHistory" id="pastHistory"    cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
 					<div class="row cl">
 						<label class="form-label  col-sm-3">过敏史：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="allergy" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="allergy" id="allergy"   cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
@@ -163,7 +163,16 @@
 				treeNode.status+"&nbsp;&nbsp;&nbsp;"
 			)
 		$("#medicalId").val(treeNode.medicalId);
-    }
+
+		$('#complaint').val(treeNode.complaint);
+		$('#cmHisotry').val(treeNode.cmHisotry);
+		$('#cmCure').val(treeNode.cmCure);
+		$('#pastHistory').val(treeNode.pastHistory);
+		$('#allergy').val(treeNode.allergy);
+
+
+
+	}
 
     var code;
 
@@ -174,13 +183,17 @@
     }
 
     $(document).ready(function () {
+		initTree();
+    });
 
-    	$.get('/mzbl/queryMedicalRecord',function(nodes){
+
+
+    function initTree(){
+		$.get('/mzbl/queryMedicalRecord',function(nodes){
 			var t = $("#medicalRecordList");
 			$.fn.zTree.init(t, setting, nodes);
 		})
-    });
-
+	}
 
     function temporary(){
     	$("#status").val(2);
@@ -203,6 +216,7 @@
 						layer.close(index);
 						//刷新tree
 						//window.location.href = window.location.href;
+						initTree();
 					})
 				}
 			}

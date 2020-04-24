@@ -26,17 +26,17 @@ public class MzblService {
      * 查询病历信息 查询当前看诊时间的
      * @return
      */
-    public List<MedicalRecord> queryMedicalRecord() {
+    public List<MedicalRecordWithBLOBs> queryMedicalRecord() {
 
         MedicalRecordExample ex1 = new MedicalRecordExample();
         ex1.createCriteria().andStatusEqualTo(HisConstants.MEDICAL_RECORD_STATUS_DZ);
-        List<MedicalRecord> dzList = medicalRecordMapper.selectByExample(ex1);
+        List<MedicalRecordWithBLOBs> dzList = medicalRecordMapper.selectByExampleWithBLOBs(ex1);
 
 
 
         MedicalRecordExample ex2 = new MedicalRecordExample();
         ex2.createCriteria().andStatusNotEqualTo(HisConstants.MEDICAL_RECORD_STATUS_DZ);
-        List<MedicalRecord> ykzList = medicalRecordMapper.selectByExample(ex2);
+        List<MedicalRecordWithBLOBs> ykzList = medicalRecordMapper.selectByExampleWithBLOBs(ex2);
 
 
         MedicalRecord root = new MedicalRecord();

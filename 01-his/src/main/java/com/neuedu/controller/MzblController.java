@@ -5,6 +5,7 @@ import com.neuedu.entity.MedicalRecordWithBLOBs;
 import com.neuedu.framework.BaseController;
 import com.neuedu.service.MzblService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class MzblController extends BaseController {
      * 查询病历信息
      */
     @RequestMapping("queryMedicalRecord")
-    public List<MedicalRecord> queryMedicalRecord(){
+    public List<MedicalRecordWithBLOBs> queryMedicalRecord(){
 
         return mzblService.queryMedicalRecord();
     }
@@ -36,7 +37,7 @@ public class MzblController extends BaseController {
 
 
 
-    @RequestMapping("save")
+       @RequestMapping("save")
     public Map save(MedicalRecordWithBLOBs mr){
 
         //保存 看诊信息
@@ -45,6 +46,8 @@ public class MzblController extends BaseController {
 
         return super.ajaxSucess(success);
     }
+
+
 
 
 
