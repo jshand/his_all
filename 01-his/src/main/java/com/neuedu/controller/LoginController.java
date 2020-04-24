@@ -50,7 +50,8 @@ public class LoginController {
         if(sessionVerifyCode == null){
             sessionVerifyCode = "";
         }
-        if(!sessionVerifyCode.equalsIgnoreCase(validaCode)){
+
+        if(!sessionVerifyCode.equalsIgnoreCase(validaCode)){//判断两个字符串是否相同，忽略大小写
             result.put("msg", "验证码不正确");
         }else{
             //校验登录的用户名、密码是否正确
