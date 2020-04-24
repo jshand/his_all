@@ -59,6 +59,8 @@
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+
 <script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
@@ -68,67 +70,47 @@
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+window.loaded = function(){
+	console.info(window.constantsCache );
 
 //找到表格加载服务器端的数据
-$('#medicalRecordTab').dataTable({
-	"processing": true,  //显示是否正在处理中
-	"serverSide": true,  //表示数据重服务器中加载
-	"paging":true,
-	"ajax":"/xcgh/tuiHaoPageList",
-		/*{
-		'url':"/xcgh/tuiHaoPageList",
-		"dataSrc" : "data",
-		"data":function(srcData){
+	$('#medicalRecordTab').dataTable({
+		"processing": true,  //显示是否正在处理中
+		"serverSide": true,  //表示数据重服务器中加载
+		"paging":true,
+		"ajax":"/xcgh/tuiHaoPageList",
+		"columns":[  //每行的列 取值的方式
+			{ "data": "medicalId" },
+			{ "data": "name" },
+			{ "data": "age" },
+			{ "data": "idCard" },
+			{ "data": "visitingTime",render:function(data,type,row,meta){
+					return row.visitingTime.replace('00:00:00','');
+				} },
+			{ "data": "status",render:function(status){
+					return constantsCache['HZZT_'+status]
+				} },
+			{ "data": "status",render:function(status, type, row, meta){
+					//根据状态进行判断
+					if(status == 1){
+						var id = row.medicalId;
+						return "<button type=\"button\" class=\"btn btn-primary radius\" id=\"\" name=\"\" onclick=\"tuiHao('"+id+"')\"><i class=\"Hui-iconfont\">&#xe6de;</i> 退号</button>";
+					}else{
+						return "无";
+					}
+				} }
+		],
 
-			var param = { aaa:'1111' 	}
-			$.extend(srcData,param);
-			$.extend( true, srcData, param );
-			return srcData;
+		fnServerParams : function (aoData) {
+			aoData.medicalId = $("#medicalId").val();
+			aoData.name = $("#name").val();
+			aoData.idCard = $("#idCard").val();
 		}
-	},*/  //表示加载数据的路径,
-	"columns":[  //每行的列 取值的方式
-		{ "data": "medicalId" },
-		{ "data": "name" },
-		{ "data": "age" },
-		{ "data": "idCard" },
-		{ "data": "visitingTime",render:function(data,type,row,meta){
-				return row.visitingTime.replace('00:00:00','');
-			} },
-		{ "data": "status",render:function(status){
-				var stat = '未知';
-				//待诊、已接诊、已问诊、诊毕、 退号
-				if(status ==1 ){
-					stat = "待诊";
-				}else if(status == 2){
-					stat = "已接诊";
-				}else if(status == 3){
-					stat = "已问诊";
-				}else if(status == 4){
-					stat = "诊毕";
-				}else if(status == 5){
-					stat = "退号";
-				}
+	});
+
+}
 
 
-				return stat;
-			} },
-		{ "data": "status",render:function(status, type, row, meta){
-			//根据状态进行判断
-			if(status == 1){
-				var id = row.medicalId;
-				return "<button type=\"button\" class=\"btn btn-primary radius\" id=\"\" name=\"\" onclick=\"tuiHao('"+id+"')\"><i class=\"Hui-iconfont\">&#xe6de;</i> 退号</button>";
-			}else{
-				return "无";
-			}
-		} }
-	],
-
-	fnServerParams : function (aoData) {
-		aoData.medicalId = $("#medicalId").val();
-		aoData.name = $("#name").val();
-		aoData.idCard = $("#idCard").val();
-	}
-});
 
 
 function tuiHao(medicalId){

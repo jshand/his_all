@@ -45,11 +45,25 @@ public class HisCache {
      *          constants:Constants [Hash = 1508425766, consId=3, consType=YN, consCode=Y, consName=是, serialVersionUID=1]
      *      *   constants:Constants [Hash = 1194601314, consId=4, consType=YN, consCode=N, consName=否, serialVersionUID=1]
      *      ]
-     *
-     *
      *  }
      */
     private static Map<String,List> cache = new HashMap();
+
+
+    /**
+     * XB_1  男
+     * XB_2  女
+     *
+     * YN_Y  是
+     * YN_N  否
+     *
+     * HZZT_1  待诊
+     *
+     *
+     *
+     *
+     */
+    private static Map<String,String> jsonCache = new HashMap();
 
 
 
@@ -91,6 +105,17 @@ public class HisCache {
         //在系统启动时初始化 常数项 1 男  2女
         list = constantsMapper.selectByExample(null);
 
+        for (Constants constants : list) {
+            /**
+             * XB_1  男
+             * XB_2  女
+             */
+            String key = constants.getConsType()+"_"+constants.getConsCode();
+            String value = constants.getConsName();
+            jsonCache.put(key,value);
+        }
+
+
     }
 
 
@@ -102,15 +127,17 @@ public class HisCache {
 
         list.clear();
 
-        initCache(); //重新查询c常量数据
+        jsonCache.clear();
+
+        initCache(); //重新查询常量数据
     }
 
 
-
-
-
-
-
-
-
+    /**
+     * 获取json格式的 常量缓存
+     * @return
+     */
+    public static Map<String, String> getJsonCache() {
+        return jsonCache;
+    }
 }

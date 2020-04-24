@@ -1,11 +1,13 @@
 package com.neuedu.controller;
 
+import com.neuedu.entity.Constants;
 import com.neuedu.framework.BaseController;
 import com.neuedu.framework.cache.HisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +33,17 @@ public class HisConfigController extends BaseController {
     public Map clearCahce(){
         cache.clear();
         return super.ajaxSucess(true);
+    }
+
+
+    /**
+     * 获取json格式的系统缓存
+     * http://127.0.0.1/hisconfig/getJsonCache
+     * @return
+     */
+    @RequestMapping("getJsonCache")
+    public Map<String,String> getJsonCache(){
+        return HisCache.getJsonCache();
     }
 
 
