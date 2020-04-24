@@ -2,6 +2,7 @@ package com.neuedu.service;
 
 import com.neuedu.entity.*;
 import com.neuedu.framework.HisConstants;
+import com.neuedu.framework.cache.HisCache;
 import com.neuedu.mapper.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -50,9 +51,12 @@ public class XcghService {
     public Map initPage(){
         //1 性别的列表
         //TODO 应该在初始化的时候 查询
-        ConstantsExample conExample = new ConstantsExample();
-        conExample.createCriteria().andConsTypeEqualTo(HisConstants.CONSTANTS_TYP_XB);
-        List xbList = constantsMapper.selectByExample(conExample);
+//        ConstantsExample conExample = new ConstantsExample();
+//        conExample.createCriteria().andConsTypeEqualTo(HisConstants.CONSTANTS_TYP_XB);
+//        List xbList = constantsMapper.selectByExample(conExample);
+        //从缓存中获取 性别集合
+        List<Constants> xbList = HisCache.getConstantsListByConsType(HisConstants.CONSTANTS_TYP_XB);
+
 
         //2 科室列表
         DeptExample deptExample = new DeptExample();
