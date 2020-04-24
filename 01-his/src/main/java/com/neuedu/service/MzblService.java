@@ -81,4 +81,6 @@ public class MzblService {
        int count =  medicalRecordMapper.updateByPrimaryKeySelective(mr);
        return count>0;
     }
+
+
 }

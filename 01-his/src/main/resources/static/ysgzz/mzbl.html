@@ -37,13 +37,14 @@
 
             <div class="text-c" style="padding-right: 100px;">
                 <form action="" class="form form-horizontal" id="mzblForm">
-					<input type="text" name="medicalId" id="medicalId" value="" />
+					<input type="hidden" name="medicalId" id="medicalId" value="" />
+					<input type="hidden" name="status" id="status" value="" />
 
 					<div class="row cl">
 						<button onClick="temporary();" class="btn btn-primary radius" type="button">
 							<i class="Hui-iconfont">&#xe617;</i> 暂存</button>
 
-						<button onClick="gh_submit();" class="btn btn-primary radius" type="button">
+						<button onClick="save();" class="btn btn-primary radius" type="button">
 							<i class="Hui-iconfont">&#xe617;</i> 提交</button>
 
 						<button onClick="gh_submit();" class="btn btn-primary radius" type="button">
@@ -182,21 +183,30 @@
 
 
     function temporary(){
+    	$("#status").val(2);
+		saveMzbl();
+	}
 
-    	var url = '/mzbl/save';
-    	$.ajax(url,{
-    		data:$("#mzblForm").serialize(),
-    		success:function(data){
-    			if(data.success){
-    				layer.alert('保存成功',function(index){
-    					layer.close(index);
-    					window.location.href = window.location.href;
+
+	function save(){
+		$("#status").val(3);
+		saveMzbl();
+	}
+
+	function saveMzbl(){
+		var url = '/mzbl/save';
+		$.ajax(url,{
+			data:$("#mzblForm").serialize(),
+			success:function(data){
+				if(data.success){
+					layer.alert('保存成功',function(index){
+						layer.close(index);
+						//刷新tree
+						//window.location.href = window.location.href;
 					})
 				}
 			}
 		})
-
-
 	}
 </script>
 </body>
