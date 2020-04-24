@@ -2,6 +2,7 @@ package com.neuedu.service;
 
 import com.neuedu.entity.MedicalRecord;
 import com.neuedu.entity.MedicalRecordExample;
+import com.neuedu.entity.MedicalRecordWithBLOBs;
 import com.neuedu.framework.HisConstants;
 import com.neuedu.mapper.MedicalRecordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,16 @@ public class MzblService {
         treeNode.addAll(ykzList);
 
         return treeNode;
+    }
+
+    /**
+     * 保存门诊病历信息
+     * @param mr
+     * @return
+     */
+    public boolean save(MedicalRecordWithBLOBs mr) {
+
+       int count =  medicalRecordMapper.updateByPrimaryKeySelective(mr);
+       return count>0;
     }
 }

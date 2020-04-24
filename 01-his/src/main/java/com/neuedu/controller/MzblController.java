@@ -1,12 +1,15 @@
 package com.neuedu.controller;
 
 import com.neuedu.entity.MedicalRecord;
+import com.neuedu.entity.MedicalRecordWithBLOBs;
+import com.neuedu.framework.BaseController;
 import com.neuedu.service.MzblService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 项目    ： his_all
@@ -17,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("mzbl")
-public class MzblController {
+public class MzblController extends BaseController {
 
     @Autowired
     MzblService mzblService;
@@ -28,8 +31,23 @@ public class MzblController {
     public List<MedicalRecord> queryMedicalRecord(){
 
         return mzblService.queryMedicalRecord();
-
     }
+
+
+
+
+    @RequestMapping("save")
+    public Map save(MedicalRecordWithBLOBs mr){
+
+        //保存 看诊信息
+        boolean success = mzblService.save(mr);
+
+
+        return super.ajaxSucess(success);
+    }
+
+
+
 
 
 }

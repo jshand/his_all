@@ -36,10 +36,11 @@
         <td class="va-t">
 
             <div class="text-c" style="padding-right: 100px;">
-                <form action="" class="form form-horizontal" id="xcghForm">
+                <form action="" class="form form-horizontal" id="mzblForm">
+					<input type="text" name="medicalId" id="medicalId" value="" />
 
 					<div class="row cl">
-						<button onClick="gh_submit();" class="btn btn-primary radius" type="button">
+						<button onClick="temporary();" class="btn btn-primary radius" type="button">
 							<i class="Hui-iconfont">&#xe617;</i> 暂存</button>
 
 						<button onClick="gh_submit();" class="btn btn-primary radius" type="button">
@@ -59,14 +60,14 @@
 					<div class="row cl">
 						<label class="form-label  col-sm-3">主诉：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="complaint" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
 					<div class="row cl">
 						<label class="form-label  col-sm-3">现病史：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="cmHisotry" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
@@ -74,7 +75,7 @@
 					<div class="row cl">
 						<label class="form-label  col-sm-3">现病治疗情况：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="cmCure" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
@@ -82,14 +83,14 @@
 					<div class="row cl">
 						<label class="form-label  col-sm-3">既往史：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="pastHistory" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
 					<div class="row cl">
 						<label class="form-label  col-sm-3">过敏史：</label>
 						<div class="formControls col-sm-9">
-							<textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+							<textarea name="allergy" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 							<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>						</div>
 					</div>
 
@@ -154,12 +155,13 @@
 
 
         $("#medicalRecordInfo").html('病历号:'+
-                                        treeNode.medicalId+"&nbsp;&nbsp;&nbsp;"+
-                                    '患者姓名:'+
-                                    treeNode.name+"&nbsp;&nbsp;&nbsp;"+
-                                    '当前状态:'+
-                                    treeNode.status+"&nbsp;&nbsp;&nbsp;"
-                                )
+					treeNode.medicalId+"&nbsp;&nbsp;&nbsp;"+
+				'患者姓名:'+
+				treeNode.name+"&nbsp;&nbsp;&nbsp;"+
+				'当前状态:'+
+				treeNode.status+"&nbsp;&nbsp;&nbsp;"
+			)
+		$("#medicalId").val(treeNode.medicalId);
     }
 
     var code;
@@ -176,9 +178,26 @@
 			var t = $("#medicalRecordList");
 			$.fn.zTree.init(t, setting, nodes);
 		})
-
-
     });
+
+
+    function temporary(){
+
+    	var url = '/mzbl/save';
+    	$.ajax(url,{
+    		data:$("#mzblForm").serialize(),
+    		success:function(data){
+    			if(data.success){
+    				layer.alert('保存成功',function(index){
+    					layer.close(index);
+    					window.location.href = window.location.href;
+					})
+				}
+			}
+		})
+
+
+	}
 </script>
 </body>
 </html>
