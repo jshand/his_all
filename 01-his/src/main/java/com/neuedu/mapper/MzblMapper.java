@@ -1,6 +1,7 @@
 package com.neuedu.mapper;
 
 import com.neuedu.entity.ApplyCheckingExt;
+import com.neuedu.entity.ApplyInspectExt;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -20,4 +21,13 @@ public interface MzblMapper {
      * @return
      */
     public List<ApplyCheckingExt> queryApplyCheckingWithMedicalId(Integer medicalId);
+
+
+
+    /**
+     * 根据病历号查询已申请的检验
+     * @param medicalId
+     * @return
+     */
+    public List<ApplyInspectExt> queryApplyInspectWithMedicalId(Integer medicalId);
 }

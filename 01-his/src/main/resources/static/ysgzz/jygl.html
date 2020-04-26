@@ -24,7 +24,7 @@
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 医生工作站
-    <span class="c-gray en">&gt;</span>检查管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+    <span class="c-gray en">&gt;</span>检验管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
                                                href="javascript:location.replace(location.href);" title="刷新"><i
             class="Hui-iconfont">&#xe68f;</i></a></nav>
 <table class="table">
@@ -138,14 +138,14 @@
         "processing": true,  //显示是否正在处理中
         "serverSide": true,  //表示数据重服务器中加载
         "paging":true,
-        "ajax": "/mzbl/queryApplyCheckingWithMedicalId",  //表示加载数据的路径,
+        "ajax": "/mzbl/queryApplyInspectWithMedicalId",  //表示加载数据的路径,
         "columns":[  //每行的列 取值的方式
-            { "data": "checkId"},
+            { "data": "inspectId"},
             { "data": "name"},
-            { "data": "checkName"},
+            { "data": "inspectName"},
             { "data": "fee"},
             { "data": "status"},
-            { "data": "checkId"},
+            { "data": "inspectId"},
 
         ],
         fnServerParams:function(data){
@@ -173,8 +173,8 @@
 		if($("#medicalId").val() && $("#medicalId").val() != ''){
             index = layer.open({
                 type: 2,
-                title: "申请检查",
-                content: "./jcxm_item_list.html",
+                title: "申请检验",
+                content: "./jyxm_item_list.html",
                 area:['900px',"550px"]
             });
         }else{

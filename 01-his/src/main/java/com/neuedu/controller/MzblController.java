@@ -111,4 +111,42 @@ public class MzblController extends BaseController {
         return super.ajaxSucess(true);
     }
 
+
+    /**
+     * 申请检验
+     * http://127.0.0.1/mzbl/sqjc/病历号/申请的检验项目id
+     * @param medicalId
+     * @param inspectId
+     * @return
+     */
+    @RequestMapping("sqjy/{medicalId}/{inspectId}")
+    public Map sqjy(@PathVariable(name="medicalId") Integer medicalId,@PathVariable(name="inspectId") Integer inspectId){
+
+        boolean success = mzblService.sqjy(medicalId,inspectId);
+
+        return super.ajaxSucess(success);
+    }
+
+
+
+    /**
+     * 根据病历号查询已申请的 检查
+     * http://127.0.0.1:80/mzbl/queryApplyCheckingWithMedicalId?medicalId=2
+     * @param start
+     * @param pageSize
+     * @param draw
+     * @param medicalId
+     * @return
+     */
+    @RequestMapping("queryApplyInspectWithMedicalId")
+    public Map pageList2(
+            @RequestParam(defaultValue = "0") int start,
+            @RequestParam(value ="length",defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "1") int draw ,  int medicalId) {
+
+        Page<CheckingItem> page = PageHelper.offsetPage(start,pageSize);
+        mzblService.queryApplyInspectWithMedicalId(medicalId);
+
+        return pageReuslt(draw,page);
+    }
 }

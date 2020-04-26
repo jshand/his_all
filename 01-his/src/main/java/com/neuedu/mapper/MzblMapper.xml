@@ -5,6 +5,9 @@
   <resultMap id="ResultMap1" type="ApplyCheckingExt" extends="com.neuedu.mapper.ApplyCheckingMapper.BaseResultMap">
     <result column="name" property="name"></result>
   </resultMap>
+    <resultMap id="ResultMap2" type="ApplyInspectExt" extends="com.neuedu.mapper.ApplyInspectMapper.BaseResultMap">
+    <result column="name" property="name"></result>
+  </resultMap>
 
 
   <select id="queryApplyCheckingWithMedicalId" parameterType="int" resultMap="ResultMap1" >
@@ -24,5 +27,23 @@
         ON ac.medical_id = mr.medical_id
     WHERE ac.medical_id = #{medicalId}
 
+  </select>
+
+  <select id="queryApplyInspectWithMedicalId" parameterType="int" resultMap="ResultMap2" >
+         SELECT
+      mr.name NAME,
+      apply_inspect_id ,
+      ai.medical_id medical_id,
+      inspect_id,
+      inspect_name,
+      fee,
+      ai.status,
+      ai.is_del,
+      ai.create_time
+    FROM
+      t_apply_inspect ai
+      INNER JOIN t_medical_record mr
+        ON ai.medical_id = mr.medical_id
+    WHERE ai.medical_id =  #{medicalId}
   </select>
 </mapper>

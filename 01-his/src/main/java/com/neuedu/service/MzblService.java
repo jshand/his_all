@@ -2,10 +2,7 @@ package com.neuedu.service;
 
 import com.neuedu.entity.*;
 import com.neuedu.framework.HisConstants;
-import com.neuedu.mapper.ApplyCheckingMapper;
-import com.neuedu.mapper.CheckingItemMapper;
-import com.neuedu.mapper.MedicalRecordMapper;
-import com.neuedu.mapper.MzblMapper;
+import com.neuedu.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +29,12 @@ public class MzblService {
 
     @Autowired
     MzblMapper mzblMapper;
+
+    @Autowired
+    InspectItemMapper inspectItemMapper;
+
+    @Autowired
+    ApplyInspectMapper applyInspectMapper;
 
     /**
      * 查询病历信息 查询当前看诊时间的
@@ -109,7 +112,7 @@ public class MzblService {
 
 
     /**
-     * 申请一条
+     * 申请一条检查
      * @param medicalId
      * @param checkId
      * @return
@@ -156,5 +159,50 @@ public class MzblService {
         }
 
         return checkIds.length == count;
+    }
+
+     /**
+     * 申请检验
+     * @param medicalId
+     * @param inspectId
+     * @return
+     */
+    public boolean sqjy(Integer medicalId, Integer inspectId) {
+
+        int count = sqJyByOne(medicalId,inspectId);
+
+        return count > 0;
+    }
+
+
+
+    /**
+     * 申请一条检验
+     * @param medicalId
+     * @param inspectId
+     * @return
+     */
+    public int sqJyByOne(Integer medicalId, Integer inspectId){
+        InspectItem inspectItem = inspectItemMapper.selectByPrimaryKey(inspectId);
+
+
+        //待检验项目
+        ApplyInspect applyInspect = new ApplyInspect();
+        applyInspect.setMedicalId(medicalId);
+
+        applyInspect.setInspectId(inspectItem.getInspectId());
+        applyInspect.setInspectName(inspectItem.getInspectName());
+        applyInspect.setFee(inspectItem.getFee());
+
+        applyInspect.setStatus("1");//
+
+        int count = applyInspectMapper.insertSelective(applyInspect);
+
+        return count;
+    }
+
+
+    public List<ApplyInspectExt> queryApplyInspectWithMedicalId(Integer medicalId){
+        return mzblMapper.queryApplyInspectWithMedicalId(medicalId);
     }
 }

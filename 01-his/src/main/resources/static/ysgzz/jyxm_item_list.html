@@ -1,0 +1,199 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="../lib/html5shiv.js"></script>
+<script type="text/javascript" src="../lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="../lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+</head>
+<body>
+
+<div class="page-container">
+	<div class="text-c">
+
+		项目名称:
+		<input type="text" class="input-text" id="inspectName" name="" style="width:150px">
+
+
+		<button type="button" class="btn btn-primary radius" id="" name="" onclick="queryMedical()"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+	</div>
+
+
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l"><a href="javascript:;" onclick="mulSelect()" class="btn btn-primary radius">
+		<i class="Hui-iconfont">&#xe632;</i> 批量申请</a></span> </div>
+
+
+	<div class="mt-20">
+		<table id="medicalRecordTab" class="table table-border table-bordered table-bg table-sort">
+			<thead>
+				<tr class="text-c">
+					<th width="25"><input type="checkbox" name="" value=""></th>
+					<th width="70">序号</th>
+					<th width="100">检查项目</th>
+					<th width="100">检查费用</th>
+					<th width="100">操作</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+
+<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+window.loaded = function(){
+	// console.info(window.constantsCache );
+
+//找到表格加载服务器端的数据
+	$('#medicalRecordTab').dataTable({
+		"processing": true,  //显示是否正在处理中
+		"serverSide": true,  //表示数据重服务器中加载
+		"paging":true,
+		"ajax":"/jy/pageList",
+		"aoColumnDefs": [
+			{"orderable":false,"aTargets":[0]}// 制定列不参与排序
+		],
+		"columns":[  //每行的列 取值的方式
+			{ "data":'inspectId', render:function(inspectId,type,row,meta){
+					return "<input type=\"checkbox\" value='"+inspectId+"' name=\"ckIds\">"
+				} },
+			{ "data": "inspectId" },
+			{ "data": "inspectName" },
+			{ "data": "fee" },
+			{ "data": "inspectId" ,render:function(inspectId,type,row,meta){
+
+				return "<a class=\"btn btn-primary radius\" onclick=\"apply_inspect('"+inspectId+"')\" href=\"javascript:;\"><i class=\"Hui-iconfont\">&#xe600;</i> 申请</a>";
+				}},
+
+		],
+
+		fnServerParams : function (aoData) {
+			aoData.inspectName = $("#inspectName").val();
+		}
+	});
+
+}
+
+
+
+function apply_inspect(inspectId){
+
+	//从父窗体中获取 病历号
+	var medicalId = window.parent.$("#medicalId").val();
+
+	var url = '/mzbl/sqjy/'+medicalId+'/'+inspectId;
+	$.get(url,function(data){
+		if(data.success){
+			layer.alert('申请成功',function(){
+				parent.refresh();
+			})
+		}
+	})
+
+
+
+}
+
+
+
+function tuiHao(medicalId){
+	$.get('/xcgh/tuiHao/'+medicalId,function(data){
+		if(data.success){
+			layer.alert('退号成功..',function(index){
+				layer.close(index);
+				queryMedical();
+			});
+		}
+	})
+}
+
+function edit(id){
+	var url="./product-add.html";
+	var title="修改角色";
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+
+
+function del(id){
+	alert("待删除的"+id);
+}
+
+function queryMedical(){
+	$('#medicalRecordTab').DataTable().ajax.reload();
+}
+
+
+function mulSelect(){
+
+	//获取所有选中的 检查项目id
+	var cks = $("input[name=ckIds]:checked");
+	if(!cks || cks.length == 0 ){
+		layer.alert("请至少选择一个检查项目");
+		return;
+	}
+	var ckIds = [];
+	$.each(cks,function(index,ck){
+		ckIds.push($(ck).val())
+	});
+
+	//从父窗体中获取 病历号
+	var medicalId = window.parent.$("#medicalId").val();
+	var url = '/mzbl/plsqjc'
+	// $.get(url,
+	// 	{
+	// 		medicalId:medicalId,
+	// 		inspectIds:ckIds
+	//
+	// 	},)
+
+	$.ajax(url,{
+		traditional: true,
+		data:{
+			medicalId:medicalId,
+			inspectIds:ckIds
+		},
+		success:function(data){
+			if(data.success){
+				layer.alert('申请成功',function(){
+					parent.refresh();
+				})
+			}
+		}
+	})
+
+
+
+}
+</script>
+</body>
+</html>
