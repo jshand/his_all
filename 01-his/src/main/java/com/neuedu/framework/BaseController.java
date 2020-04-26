@@ -1,5 +1,7 @@
 package com.neuedu.framework;
 
+import com.github.pagehelper.Page;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +19,23 @@ public class BaseController {
         Map result = new HashMap();
         result.put("success",success);
         return result;
+    }
+
+
+    /**
+     * 返回分页结果
+     * @param draw
+     * @param page
+     * @return
+     */
+    public Map pageReuslt(int draw , Page page){
+        Map pageResult = new HashMap();
+        pageResult.put("draw",draw);
+        pageResult.put("recordsTotal", page.getTotal());
+        pageResult.put("recordsFiltered", page.getTotal());
+        pageResult.put("data",page.getResult());
+
+        return pageResult;
     }
 
 }

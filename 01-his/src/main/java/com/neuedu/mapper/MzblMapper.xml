@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.MzblMapper">
+
+  <resultMap id="ResultMap1" type="ApplyCheckingExt" extends="com.neuedu.mapper.ApplyCheckingMapper.BaseResultMap">
+    <result column="name" property="name"></result>
+  </resultMap>
+
+
+  <select id="queryApplyCheckingWithMedicalId" parameterType="int" resultMap="ResultMap1" >
+        SELECT
+      mr.name name,
+      apply_check_id,
+      ac.medical_id medical_id,
+      check_id,
+      check_name,
+      fee,
+      ac.status,
+      ac.is_del,
+      ac.create_time
+    FROM
+      t_apply_checking ac
+      INNER JOIN t_medical_record mr
+        ON ac.medical_id = mr.medical_id
+    WHERE ac.medical_id = #{medicalId}
+
+  </select>
+</mapper>

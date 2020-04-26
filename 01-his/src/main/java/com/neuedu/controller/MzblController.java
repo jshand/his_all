@@ -1,5 +1,8 @@
 package com.neuedu.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.neuedu.entity.CheckingItem;
 import com.neuedu.entity.MedicalRecord;
 import com.neuedu.entity.MedicalRecordWithBLOBs;
 import com.neuedu.framework.BaseController;
@@ -7,6 +10,7 @@ import com.neuedu.service.MzblService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -62,6 +66,29 @@ public class MzblController extends BaseController {
 
         return super.ajaxSucess(success);
     }
+
+
+    /**
+     * 根据病历号查询已申请的 检查
+     * http://127.0.0.1:80/mzbl/queryApplyCheckingWithMedicalId/2
+     * @param start
+     * @param pageSize
+     * @param draw
+     * @param medicalId
+     * @return
+     */
+    @RequestMapping("queryApplyCheckingWithMedicalId/{medicalId}")
+    public Map pageList(
+            @RequestParam(defaultValue = "0") int start,
+            @RequestParam(value ="length",defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "1") int draw , @PathVariable(name="medicalId") int medicalId) {
+
+        Page<CheckingItem> page = PageHelper.offsetPage(start,pageSize);
+        mzblService.queryApplyCheckingWithMedicalId(medicalId);
+
+        return pageReuslt(draw,page);
+    }
+
 
 
 

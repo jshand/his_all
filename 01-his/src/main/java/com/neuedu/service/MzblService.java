@@ -5,6 +5,7 @@ import com.neuedu.framework.HisConstants;
 import com.neuedu.mapper.ApplyCheckingMapper;
 import com.neuedu.mapper.CheckingItemMapper;
 import com.neuedu.mapper.MedicalRecordMapper;
+import com.neuedu.mapper.MzblMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,10 @@ public class MzblService {
 
     @Autowired
     CheckingItemMapper checkingItemMapper;
+
+    @Autowired
+    MzblMapper mzblMapper;
+
     /**
      * 查询病历信息 查询当前看诊时间的
      * @return
@@ -112,4 +117,16 @@ public class MzblService {
         int count = applyCheckingMapper.insertSelective(applyChecking);
         return count > 0;
     }
+
+
+    /**
+     * 根据病历号，查询已申请的检查
+     * @param medicalId
+     * @return
+     */
+    public List<ApplyCheckingExt> queryApplyCheckingWithMedicalId(Integer medicalId){
+        return mzblMapper.queryApplyCheckingWithMedicalId(medicalId);
+    }
+
+
 }
