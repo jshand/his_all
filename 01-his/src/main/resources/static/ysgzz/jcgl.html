@@ -48,6 +48,7 @@
 						<th width="70">项目名称</th>
 						<th width="70">费用</th>
 						<th width="70">状态</th>
+						<th width="70">操作</th>
 					</tr>
 				</thead>
 			</table>
@@ -110,6 +111,10 @@
     function nodeClick(event, treeId, treeNode){
 
 		$("#medicalId").val(treeNode.medicalId);
+
+		//查询改患者已申请的 检查项目列表
+        // queryApplyCheck(treeNode.medicalId);
+        $('#jcTab').DataTable().ajax.reload();
 	}
 
     $(document).ready(function () {
@@ -130,22 +135,32 @@
 		saveMzbl();
 	}
 
-	//找到表格加载服务器端的数据
-	$('#jcTab').dataTable({
-		"processing": true,  //显示是否正在处理中
-		"serverSide": true,  //表示数据重服务器中加载
-		"paging":true,
-		"ajax": "/role/pageList",  //表示加载数据的路径,
-		"columns":[  //每行的列 取值的方式
+    $('#jcTab').dataTable({
+        "processing": true,  //显示是否正在处理中
+        "serverSide": true,  //表示数据重服务器中加载
+        "paging":true,
+        "ajax": "/mzbl/queryApplyCheckingWithMedicalId",  //表示加载数据的路径,
+        "columns":[  //每行的列 取值的方式
+            { "data": "checkId"},
+            { "data": "name"},
+            { "data": "checkName"},
+            { "data": "fee"},
+            { "data": "status"},
+            { "data": "checkId"},
 
-			{ "data": "roleName"},
-			{ "data": "roleId"},
-			{ "data": "roleName"},
-			{ "data": "roleId"},
-			{ "data": "roleName"},
+        ],
+        fnServerParams:function(data){
+            if($("#medicalId").val() && $("#medicalId").val()!= ''){
+                data.medicalId = $("#medicalId").val();
+            }else{
+                data.medicalId = -1;
+            }
 
-		]
-	});
+        }
+    });
+
+
+
 
 	/**
 	 * 弹出页面，共选择

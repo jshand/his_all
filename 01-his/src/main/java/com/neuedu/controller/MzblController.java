@@ -70,18 +70,18 @@ public class MzblController extends BaseController {
 
     /**
      * 根据病历号查询已申请的 检查
-     * http://127.0.0.1:80/mzbl/queryApplyCheckingWithMedicalId/2
+     * http://127.0.0.1:80/mzbl/queryApplyCheckingWithMedicalId?medicalId=2
      * @param start
      * @param pageSize
      * @param draw
      * @param medicalId
      * @return
      */
-    @RequestMapping("queryApplyCheckingWithMedicalId/{medicalId}")
+    @RequestMapping("queryApplyCheckingWithMedicalId")
     public Map pageList(
             @RequestParam(defaultValue = "0") int start,
             @RequestParam(value ="length",defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "1") int draw , @PathVariable(name="medicalId") int medicalId) {
+            @RequestParam(defaultValue = "1") int draw ,  int medicalId) {
 
         Page<CheckingItem> page = PageHelper.offsetPage(start,pageSize);
         mzblService.queryApplyCheckingWithMedicalId(medicalId);
