@@ -1,9 +1,9 @@
 package com.neuedu.service;
 
-import com.neuedu.entity.MedicalRecord;
-import com.neuedu.entity.MedicalRecordExample;
-import com.neuedu.entity.MedicalRecordWithBLOBs;
+import com.neuedu.entity.*;
 import com.neuedu.framework.HisConstants;
+import com.neuedu.mapper.ApplyCheckingMapper;
+import com.neuedu.mapper.CheckingItemMapper;
 import com.neuedu.mapper.MedicalRecordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,12 @@ import java.util.List;
 public class MzblService {
     @Autowired
     MedicalRecordMapper medicalRecordMapper;
+
+    @Autowired
+    ApplyCheckingMapper applyCheckingMapper;
+
+    @Autowired
+    CheckingItemMapper checkingItemMapper;
     /**
      * 查询病历信息 查询当前看诊时间的
      * @return
@@ -83,4 +89,27 @@ public class MzblService {
     }
 
 
+    /**
+     * 申请检查
+     * @param medicalId
+     * @param checkId
+     * @return
+     */
+    public boolean sqjc(Integer medicalId, Integer checkId) {
+
+        CheckingItem checkingItem = checkingItemMapper.selectByPrimaryKey(checkId);
+
+
+        ApplyChecking applyChecking = new ApplyChecking();
+        applyChecking.setMedicalId(medicalId);
+
+        applyChecking.setCheckId(checkingItem.getCheckId());
+        applyChecking.setCheckName(checkingItem.getCheckName());
+        applyChecking.setFee(checkingItem.getFee());
+
+        applyChecking.setStatus("1");
+
+        int count = applyCheckingMapper.insertSelective(applyChecking);
+        return count > 0;
+    }
 }

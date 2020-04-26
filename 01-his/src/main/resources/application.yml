@@ -32,4 +32,4 @@ pagehelper:
   params: count=countSql
 
 
-debug: true
+debug: false

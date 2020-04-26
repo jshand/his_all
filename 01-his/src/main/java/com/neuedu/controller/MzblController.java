@@ -48,6 +48,21 @@ public class MzblController extends BaseController {
     }
 
 
+    /**
+     * 申请检查
+     * http://127.0.0.1/mzbl/sqjc/病历号/申请的检查项目id
+     * @param medicalId
+     * @param checkId
+     * @return
+     */
+    @RequestMapping("sqjc/{medicalId}/{checkId}")
+    public Map sqjc(@PathVariable(name="medicalId") Integer medicalId,@PathVariable(name="checkId") Integer checkId){
+
+        boolean success = mzblService.sqjc(medicalId,checkId);
+
+        return super.ajaxSucess(success);
+    }
+
 
 
 

@@ -82,8 +82,9 @@ window.loaded = function(){
 			{ "data": "checkId" },
 			{ "data": "checkName" },
 			{ "data": "fee" },
-			{ "data": "checkId" ,render:function(){
-				return "待处理按钮";
+			{ "data": "checkId" ,render:function(checkId,type,row,meta){
+
+				return "<a class=\"btn btn-primary radius\" onclick=\"apply_check('"+checkId+"')\" href=\"javascript:;\"><i class=\"Hui-iconfont\">&#xe600;</i> 申请</a>";
 				}},
 
 		],
@@ -97,6 +98,25 @@ window.loaded = function(){
 
 }
 
+
+
+function apply_check(checkId){
+
+	//从父窗体中获取 病历号
+	var medicalId = window.parent.$("#medicalId").val();
+
+	var url = '/mzbl/sqjc/'+medicalId+'/'+checkId;
+	$.get(url,function(data){
+		if(data.success){
+			layer.alert('申请成功',function(){
+				parent.refresh();
+			})
+		}
+	})
+
+
+
+}
 
 
 
