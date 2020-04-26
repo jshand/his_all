@@ -85,7 +85,6 @@
         callback:{
             beforeClick: nodeBeforeClick,
             onClick:nodeClick
-
         }
     };
 
@@ -155,8 +154,12 @@
             }else{
                 data.medicalId = -1;
             }
-
-        }
+        },
+        fnDrawCallback : function(){
+            this.api().column(0).nodes().each(function(cell, i) {
+                cell.innerHTML =  i + 1;
+            });
+        },
     });
 
 
@@ -183,7 +186,7 @@
 	function refresh(){
 
         //刷新父页面中的表格
-        // $().datab
+        $('#jcTab').DataTable().ajax.reload();
         //关闭当前页面
         layer.close(index)
 

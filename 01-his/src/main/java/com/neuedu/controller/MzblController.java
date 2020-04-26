@@ -90,6 +90,25 @@ public class MzblController extends BaseController {
     }
 
 
+    /**
+     * 批量申请
+     * @param medicalId
+     * @param checkIds
+     * @return
+     */
+    @RequestMapping("plsqjc")
+    public Map plsqjc( Integer medicalId, Integer[] checkIds){
+
+        System.out.println(medicalId);
+        if(checkIds!=null){
+            for (Integer checkId : checkIds) {
+                System.out.println("checkId:"+checkId);
+            }
+        }
+
+        return super.ajaxSucess(true);
+    }
+
 
 
 

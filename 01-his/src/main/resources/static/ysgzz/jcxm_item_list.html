@@ -41,6 +41,11 @@
 		<button type="button" class="btn btn-primary radius" id="" name="" onclick="queryMedical()"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
 	</div>
 
+
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="mulSelect()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量申请</a></span> </div>
+
+
 	<div class="mt-20">
 		<table id="medicalRecordTab" class="table table-border table-bordered table-bg table-sort">
 			<thead>
@@ -77,8 +82,13 @@ window.loaded = function(){
 		"serverSide": true,  //表示数据重服务器中加载
 		"paging":true,
 		"ajax":"/jc/pageList",
+		"aoColumnDefs": [
+			{"orderable":false,"aTargets":[0]}// 制定列不参与排序
+		],
 		"columns":[  //每行的列 取值的方式
-			{ "data": "checkId" },
+			{ "data":'checkId', render:function(checkId,type,row,meta){
+					return "<input type=\"checkbox\" value='"+checkId+"' name=\"ckIds\">"
+				} },
 			{ "data": "checkId" },
 			{ "data": "checkName" },
 			{ "data": "fee" },
@@ -151,6 +161,44 @@ function queryMedical(){
 	$('#medicalRecordTab').DataTable().ajax.reload();
 }
 
+
+function mulSelect(){
+
+	//获取所有选中的 检查项目id
+	var cks = $("input[name=ckIds]:checked");
+	var ckIds = [];
+	$.each(cks,function(index,ck){
+		ckIds.push($(ck).val())
+	});
+
+	//从父窗体中获取 病历号
+	var medicalId = window.parent.$("#medicalId").val();
+	var url = '/mzbl/plsqjc'
+	// $.get(url,
+	// 	{
+	// 		medicalId:medicalId,
+	// 		checkIds:ckIds
+	//
+	// 	},)
+
+	$.ajax(url,{
+		traditional: true,
+		data:{
+			medicalId:medicalId,
+			checkIds:ckIds
+		},
+		success:function(data){
+			if(data.success){
+				layer.alert('申请成功',function(){
+					parent.refresh();
+				})
+			}
+		}
+	})
+
+
+
+}
 </script>
 </body>
 </html>
