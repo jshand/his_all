@@ -34,7 +34,7 @@
         </td>
         <td class="va-t">
 
-			<input type="text" id="medicalId" value=""/>
+			<input type="hidden" id="medicalId" value=""/>
 
 			<button onClick="applyJc();" class="btn btn-primary radius" type="button">
 				<i class="Hui-iconfont">&#xe617;</i> 申请</button>
@@ -170,12 +170,16 @@
 	 */
     var index = null;
 	function applyJc(){
-		index = layer.open({
-			type: 2,
-			title: "申请检验",
-			content: "./jcxm_item_list.html",
-			area:['900px',"550px"]
-		});
+		if($("#medicalId").val() && $("#medicalId").val() != ''){
+            index = layer.open({
+                type: 2,
+                title: "申请检验",
+                content: "./jcxm_item_list.html",
+                area:['900px',"550px"]
+            });
+        }else{
+		    layer.alert('请选择看诊病人');
+        }
 		// layer.full(index);
 	}
 

@@ -102,6 +102,19 @@ public class MzblService {
      */
     public boolean sqjc(Integer medicalId, Integer checkId) {
 
+        int count = sq(medicalId,checkId);
+
+        return count > 0;
+    }
+
+
+    /**
+     * 申请一条
+     * @param medicalId
+     * @param checkId
+     * @return
+     */
+    public int sq(Integer medicalId, Integer checkId){
         CheckingItem checkingItem = checkingItemMapper.selectByPrimaryKey(checkId);
 
 
@@ -115,8 +128,10 @@ public class MzblService {
         applyChecking.setStatus("1");
 
         int count = applyCheckingMapper.insertSelective(applyChecking);
-        return count > 0;
+
+        return count;
     }
+
 
 
     /**
@@ -128,5 +143,18 @@ public class MzblService {
         return mzblMapper.queryApplyCheckingWithMedicalId(medicalId);
     }
 
+    /**
+     * 批量申请
+     * @param medicalId
+     * @param checkIds
+     * @return
+     */
+    public boolean plsqjc(Integer medicalId, Integer[] checkIds) {
+        int count = 0;
+        for (Integer checkId : checkIds) {
+            count += sq(medicalId,checkId);
+        }
 
+        return checkIds.length == count;
+    }
 }

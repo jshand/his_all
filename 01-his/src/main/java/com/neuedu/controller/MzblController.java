@@ -99,19 +99,16 @@ public class MzblController extends BaseController {
     @RequestMapping("plsqjc")
     public Map plsqjc( Integer medicalId, Integer[] checkIds){
 
-        System.out.println(medicalId);
-        if(checkIds!=null){
-            for (Integer checkId : checkIds) {
-                System.out.println("checkId:"+checkId);
-            }
-        }
+//        System.out.println(medicalId);
+//        if(checkIds!=null){
+//            for (Integer checkId : checkIds) {
+//                System.out.println("checkId:"+checkId);
+//            }
+//        }
+
+        boolean success = mzblService.plsqjc(medicalId,checkIds);
 
         return super.ajaxSucess(true);
     }
-
-
-
-
-
 
 }

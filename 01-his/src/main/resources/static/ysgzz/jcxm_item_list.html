@@ -21,21 +21,18 @@
 <![endif]-->
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
+<!--<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
 	<span class="c-gray en">&gt;</span> 医生工作站 <span class="c-gray en">&gt;</span>
 	申请检查
 	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
 	   href="javascript:location.replace(location.href);" title="刷新" >
 		<i class="Hui-iconfont">&#xe68f;</i></a>
-</nav>
+</nav>-->
 <div class="page-container">
 	<div class="text-c">
-		病历号:
-		<input type="text" class="input-text" id="medicalId" name="" style="width:150px">
-		患者姓名:
-		<input type="text" class="input-text" id="name" name="" style="width:150px">
-		患者身份证号:
-		<input type="text" class="input-text" id="idCard" name="" style="width:150px">
+
+		项目名称:
+		<input type="text" class="input-text" id="checkName" name="" style="width:150px">
 
 
 		<button type="button" class="btn btn-primary radius" id="" name="" onclick="queryMedical()"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
@@ -43,7 +40,9 @@
 
 
 
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="mulSelect()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量申请</a></span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l"><a href="javascript:;" onclick="mulSelect()" class="btn btn-primary radius">
+		<i class="Hui-iconfont">&#xe632;</i> 批量申请</a></span> </div>
 
 
 	<div class="mt-20">
@@ -100,9 +99,7 @@ window.loaded = function(){
 		],
 
 		fnServerParams : function (aoData) {
-			aoData.medicalId = $("#medicalId").val();
-			aoData.name = $("#name").val();
-			aoData.idCard = $("#idCard").val();
+			aoData.checkName = $("#checkName").val();
 		}
 	});
 
@@ -166,6 +163,10 @@ function mulSelect(){
 
 	//获取所有选中的 检查项目id
 	var cks = $("input[name=ckIds]:checked");
+	if(!cks || cks.length == 0 ){
+		layer.alert("请至少选择一个检查项目");
+		return;
+	}
 	var ckIds = [];
 	$.each(cks,function(index,ck){
 		ckIds.push($(ck).val())

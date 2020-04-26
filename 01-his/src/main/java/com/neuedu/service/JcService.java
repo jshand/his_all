@@ -3,6 +3,7 @@ package com.neuedu.service;
 import com.neuedu.entity.CheckingItem;
 import com.neuedu.entity.CheckingItemExample;
 import com.neuedu.mapper.CheckingItemMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,13 @@ public class JcService {
      */
     public List<CheckingItem> pageList(CheckingItem checkingItem) {
 
-        return checkingItemMapper.selectByExample(null);
+        //    "           "    空 isNotEmpty  true
+        //    "           "    空白  isNotBlank  false
+        CheckingItemExample em = null;
+        if(StringUtils.isNotEmpty(checkingItem.getCheckName())){
+            em = new CheckingItemExample();
+            em.createCriteria().andCheckNameLike("%"+checkingItem.getCheckName()+"%");
+        }
+        return checkingItemMapper.selectByExample(em);
     }
 }
