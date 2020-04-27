@@ -13,7 +13,7 @@ import java.util.List;
 @Configuration
 public class DateConverter implements Converter<String, Date> {
  
-    private static final List<String> formarts = new ArrayList<>(4);
+    private static final List<String> formarts = new ArrayList(4);
     static{
         formarts.add("yyyy-MM");
         formarts.add("yyyy-MM-dd");

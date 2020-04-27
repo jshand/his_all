@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,18 +39,26 @@ public class MzblService {
 
     /**
      * 查询病历信息 查询当前看诊时间的
+     * 根据医生工号
      * @return
      */
-    public List<MedicalRecordWithBLOBs> queryMedicalRecord() {
+    public List<MedicalRecordWithBLOBs> queryMedicalRecord(Integer docId) {
 
         MedicalRecordExample ex1 = new MedicalRecordExample();
-        ex1.createCriteria().andStatusEqualTo(HisConstants.MEDICAL_RECORD_STATUS_DZ);
+        ex1.createCriteria().
+                andStatusEqualTo(HisConstants.MEDICAL_RECORD_STATUS_DZ).
+                andDocIdEqualTo(docId);
+        // yyyy-MM-dd    new Date().formart("yyy-MM-dd")
+//                andVisitingTimeEqualTo(new Date());
+
+        //TODO ,查询病历时需要查询 当天的看诊
         List<MedicalRecordWithBLOBs> dzList = medicalRecordMapper.selectByExampleWithBLOBs(ex1);
 
 
-
         MedicalRecordExample ex2 = new MedicalRecordExample();
-        ex2.createCriteria().andStatusNotEqualTo(HisConstants.MEDICAL_RECORD_STATUS_DZ);
+        ex2.createCriteria().
+                andStatusNotEqualTo(HisConstants.MEDICAL_RECORD_STATUS_DZ).
+                andDocIdEqualTo(docId);
         List<MedicalRecordWithBLOBs> ykzList = medicalRecordMapper.selectByExampleWithBLOBs(ex2);
 
 
