@@ -9,6 +9,82 @@
       t_medical_record
 
   </select>
+
+  
+  
+  <resultMap id="feeResultMap" type="com.neuedu.entity.FeeRecord">
+
+    <result column="apply_id" property="applyId"></result>
+    <result column="medical_id" property="medicalId"></result>
+    <result column="item_name" property="itemName"></result>
+    <result column="fee" property="fee"></result>
+    <result column="status" property="status"></result>
+    <result column="create_time" property="createTime"></result>
+    <result column="type" property="type"></result>
+    <result column="name" property="name"></result>
+    <result column="id_card" property="idCard"></result>
+
+  </resultMap>
+
+  <!--查询所有开具的费用-->
+  <select id="selectFee" parameterType="com.neuedu.entity.MedicalRecord"  resultMap="feeResultMap">
+
+select
+  apply.apply_id,
+  apply.medical_id,
+  apply.item_name,
+  apply.fee,
+  apply.status,
+  apply.create_time,
+  apply.type,
+  mr.name,
+  mr.id_card
+
+FROM
+  (SELECT
+    ac.apply_check_id apply_id,
+    ac.medical_id,
+    ac.check_name item_name,
+    ac.fee,
+    ac.status,
+    ac.create_time,
+    '1' TYPE
+  FROM
+    t_apply_checking ac
+  UNION
+  ALL
+  SELECT
+    ai.apply_inspect_id apply_id,
+    ai.medical_id,
+    ai.inspect_name item_name,
+    ai.fee,
+    ai.status,
+    ai.create_time,
+    '2' TYPE
+  FROM
+    t_apply_inspect ai) apply
+  INNER JOIN t_medical_record mr
+    ON apply.medical_id = mr.medical_id
+
+    <where>
+      <if test="medicalId != null and medicalId != ''">
+        and mr.medical_id = #{medicalId}
+      </if>
+      <if test="name != null and name != ''">
+        and mr.name like '%${name}%'
+      </if>
+      <if test="idCard != null and idCard != ''">
+        and mr.id_card like '%${idCard}%'
+      </if>
+
+    </where>
+
+    ORDER BY apply.create_time DESC
+
+
+  </select>
+
+
   
 
 </mapper>
