@@ -145,4 +145,25 @@ public class XcghController extends BaseController {
         return super.pageReuslt(draw,page);
     }
 
+
+    /**
+     * 收费 没有涉及到财务 只改变 申请检察、申请检验的状态变为已收费。
+     * @param applyCheckIds
+     * @param applyInspectIds
+     * @return
+     */
+    @RequestMapping("charge")
+    public Map charge(Integer[] applyCheckIds ,Integer[] applyInspectIds){
+
+        for (Integer applyCheckId : applyCheckIds) {
+            System.out.println("applyCheckId:"+applyCheckId);
+        }
+
+        for (Integer applyInspectId : applyInspectIds) {
+            System.out.println("applyInspectId:"+applyInspectId);
+        }
+
+        return super.ajaxSucess(true);
+    }
+
 }

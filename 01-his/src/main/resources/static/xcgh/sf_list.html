@@ -165,6 +165,26 @@ function plsf(){
 
 
 	//将选中的检查申请 、 检验申请的 ids 发送给后端，后代修改状态 已收费
+	/**
+	 * applyCheckIds[] =1 & applyCheckIds[]=2
+	 * applyCheckIds =1 & applyCheckIds=2
+	 */
+
+	$.ajax('/xcgh/charge',{
+		traditional: true,
+		data:{
+			applyCheckIds:applyCheckIds,
+			applyInspectIds:applyInspectIds
+		},
+		success:function(data){
+			if(data.success){
+				alert('发送信息');
+			}
+		}
+
+	})
+
+
 
 }
 
