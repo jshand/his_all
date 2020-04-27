@@ -41,6 +41,11 @@
 		<button type="button" class="btn btn-primary radius" id="" name="" onclick="queryFee()"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
 	</div>
 
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l"><a href="javascript:;" onclick="plsf()" class="btn btn-primary radius">
+		<i class="Hui-iconfont">&#xe6e2;</i> 批量收费</a></span>  </div>
+
+
 	<div class="mt-20">
 		<table id="feeTab" class="table table-border table-bordered table-bg table-sort">
 			<thead>
@@ -76,25 +81,19 @@
 window.loaded = function(){
 
 
-	/***
-	 *
-	 * <th width="70">病历号</th>
-	 <th width="70">患者姓名</th>
-	 <th width="70">证件号码</th>
-	 <th width="70">收费项目</th>
-	 <th width="70">费用</th>
-	 <th width="100">状态</th>
-	 <th width="100">开立时间</th>
-	 */
 //找到表格加载服务器端的数据
 	$('#feeTab').dataTable({
 		"processing": true,  //显示是否正在处理中
 		"serverSide": true,  //表示数据重服务器中加载
 		"paging":true,
 		"ajax":"/xcgh/feePageList",
+		"aoColumnDefs": [
+			{"orderable":false,"aTargets":[0]}// 制定列不参与排序
+		],
 		"columns":[  //每行的列 取值的方式
-			{ "data": "applyId",render:function(applyId){
-				return '<input name="" type="checkbox" value="'+applyId+'">';
+			{ "data": "applyId",render:function(applyId,tt,row){
+				var type = row.type;
+				return '<input name="applyId" type="checkbox" data-type="'+type+'" value="'+applyId+'">';
 				} },
 			{ "data": "medicalId" },
 			{ "data": "name" },
@@ -136,6 +135,37 @@ window.loaded = function(){
 
 function queryFee(){
 	$('#feeTab').DataTable().ajax.reload();
+}
+
+
+function plsf(){
+
+	//获取选中的
+	//
+	// 检查 ids -- status
+	// 检验 ids -- status
+
+	var applyCheckIds = [];
+	var applyInspectIds = [];
+
+
+	var applyIds = $("input[name=applyId]:checked");
+	$.each(applyIds,function(index,ck){
+		//console.info(ck);
+		var type  = $(ck).attr("data-type");
+		if(type == 1){
+			applyCheckIds.push($(ck).val());
+		}else{
+			applyInspectIds.push($(ck).val());
+		}
+	})
+
+	console.info(applyCheckIds); // status
+	console.info(applyInspectIds); // status
+
+
+	//将选中的检查申请 、 检验申请的 ids 发送给后端，后代修改状态 已收费
+
 }
 
 </script>
