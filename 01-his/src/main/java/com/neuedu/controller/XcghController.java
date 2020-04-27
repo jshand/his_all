@@ -2,6 +2,7 @@ package com.neuedu.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.neuedu.entity.FeeRecord;
 import com.neuedu.entity.MedicalRecord;
 import com.neuedu.entity.Role;
 import com.neuedu.framework.BaseController;
@@ -119,5 +120,29 @@ public class XcghController extends BaseController {
         return super.ajaxSucess(success);
     }
 
+
+    /**
+     * 分页查询 收费项目
+     *
+     * xcgh/feePageList
+     * @param start
+     * @param pageSize
+     * @param draw
+     * @param mr
+     * @return
+     */
+    @RequestMapping("feePageList")
+    public Map feePageList(
+            @RequestParam(defaultValue = "0") int start,
+            @RequestParam(value ="length",defaultValue = "10") int pageSize,
+            int draw ,MedicalRecord mr    ){
+
+        Page<FeeRecord> page = PageHelper.offsetPage(start,pageSize);
+
+        xcghService.feePageList(mr);
+
+
+        return super.pageReuslt(draw,page);
+    }
 
 }

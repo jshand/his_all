@@ -179,4 +179,14 @@ public class XcghService {
 
         return count>0;
     }
+
+    /**
+     * 查询所有收费项目
+     * @param mr
+     * @return
+     */
+    public List feePageList(MedicalRecord mr) {
+        List<FeeRecord> feeList = xcghExtMapper.selectFee(mr);
+        return feeList;
+    }
 }
