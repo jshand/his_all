@@ -189,4 +189,20 @@ public class XcghService {
         List<FeeRecord> feeList = xcghExtMapper.selectFee(mr);
         return feeList;
     }
+
+
+    /**
+     * 收费操作  只改状态
+     * @param applyCheckIds
+     * @param applyInspectIds
+     * @return
+     */
+    public boolean charge(Integer[] applyCheckIds, Integer[] applyInspectIds) {
+
+        return false;
+    }
+
+
+
+
 }

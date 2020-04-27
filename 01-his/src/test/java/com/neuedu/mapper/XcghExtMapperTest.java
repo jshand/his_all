@@ -36,4 +36,22 @@ class XcghExtMapperTest {
             System.out.println(feeRecord);
         }
     }
+
+    @Test
+    void updateApplyCheckingStatus() {
+
+        String status = "2";
+        Integer[] applyCheckIds = {2,3,4,5};
+        int count  = xcghExtMapper.updateApplyCheckingStatus(status,applyCheckIds);
+        System.out.println("count:"+count);
+    }
+
+    @Test
+    void updateApplyInspectStatus() {
+
+        String status = "2";
+        Integer[] applyInspectIds = {2,3,4,5};
+        int count  = xcghExtMapper.updateApplyInspectStatus(status,applyInspectIds);
+        System.out.println("count:"+count);
+    }
 }

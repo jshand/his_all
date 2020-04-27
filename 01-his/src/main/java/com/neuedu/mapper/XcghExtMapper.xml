@@ -85,6 +85,32 @@ FROM
   </select>
 
 
+  <!--更新申请检查的状态-->
+  <update id="updateApplyCheckingStatus">
+
+      UPDATE  t_apply_checking t  SET t.status = #{status}
+      WHERE t.apply_check_id IN
+
+      <foreach collection="applyCheckIds" open="("  separator="," close=")" item="applyCheckId">
+        #{applyCheckId}
+      </foreach>
+
+  </update>
+
+
+
+  <!--更新申请检验的状态-->
+  <update id="updateApplyInspectStatus">
+
+    UPDATE  t_apply_inspect t  SET t.status = #{status}
+    WHERE t.apply_inspect_id IN
+
+    <foreach collection="applyInspectIds" open="("  separator="," close=")" item="applyInspectId">
+      #{applyInspectId}
+    </foreach>
+
+  </update>
+
   
 
 </mapper>

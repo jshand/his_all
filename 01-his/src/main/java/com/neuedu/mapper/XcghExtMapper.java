@@ -2,6 +2,7 @@ package com.neuedu.mapper;
 
 import com.neuedu.entity.FeeRecord;
 import com.neuedu.entity.MedicalRecord;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,4 +28,23 @@ public interface XcghExtMapper {
      * @return
      */
     public List<FeeRecord> selectFee(MedicalRecord mr);
+
+
+    /**
+     * 更新申请检查的状态
+     * @param applyCheckIds
+     * @return
+     */
+    public int updateApplyCheckingStatus(@Param(value="status") String status , @Param(value="applyCheckIds") Integer[] applyCheckIds);
+
+
+    /**
+     * 更新申请检化验的状态
+     * @param applyInspectIds
+     * @return
+     */
+    public int updateApplyInspectStatus(@Param(value="status") String status ,@Param(value="applyInspectIds")Integer[] applyInspectIds);
+
+
+
 }
