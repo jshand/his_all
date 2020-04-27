@@ -155,14 +155,6 @@ public class XcghController extends BaseController {
     @RequestMapping("charge")
     public Map charge(Integer[] applyCheckIds ,Integer[] applyInspectIds){
 
-
-//        for (Integer applyCheckId : applyCheckIds) {
-//            System.out.println("applyCheckId:"+applyCheckId);
-//        }
-//
-//        for (Integer applyInspectId : applyInspectIds) {
-//            System.out.println("applyInspectId:"+applyInspectId);
-//        }
         boolean  success = xcghService.charge(applyCheckIds , applyInspectIds);
 
         return super.ajaxSucess(success);

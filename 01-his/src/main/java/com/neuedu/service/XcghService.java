@@ -199,7 +199,26 @@ public class XcghService {
      */
     public boolean charge(Integer[] applyCheckIds, Integer[] applyInspectIds) {
 
-        return false;
+
+        String yjfCheck = HisConstants.JCZT_YJF;  //检查状态——已收费
+        String yjfInspect = HisConstants.JYZT_YJF; //检验状态——已收费
+
+       int coutAll = 0;
+       int countCheckIds = 0;
+       int countInspectIds = 0;
+
+       if(applyCheckIds!=null && applyCheckIds.length!=0){
+           coutAll += xcghExtMapper.updateApplyCheckingStatus(yjfCheck,applyCheckIds);
+           countCheckIds = applyCheckIds.length;
+       }
+
+        if(applyInspectIds!=null && applyInspectIds.length!=0){
+            coutAll += xcghExtMapper.updateApplyInspectStatus(yjfInspect,applyInspectIds);
+            countInspectIds = applyInspectIds.length;
+        }
+
+        return coutAll == (countCheckIds + countInspectIds);
+
     }
 
 
