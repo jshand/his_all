@@ -128,7 +128,7 @@ public class MzblService {
         applyChecking.setCheckName(checkingItem.getCheckName());
         applyChecking.setFee(checkingItem.getFee());
 
-        applyChecking.setStatus("1");
+        applyChecking.setStatus(HisConstants.JCZT_DJF);
 
         int count = applyCheckingMapper.insertSelective(applyChecking);
 
@@ -194,7 +194,7 @@ public class MzblService {
         applyInspect.setInspectName(inspectItem.getInspectName());
         applyInspect.setFee(inspectItem.getFee());
 
-        applyInspect.setStatus("1");//
+        applyInspect.setStatus(HisConstants.JYZT_DJF);//
 
         int count = applyInspectMapper.insertSelective(applyInspect);
 

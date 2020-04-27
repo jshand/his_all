@@ -35,4 +35,22 @@ public class HisConstants {
     public static final String MEDICAL_RECORD_STATUS_YWZ = "3";
     public static final String MEDICAL_RECORD_STATUS_ZYB = "4";
     public static final String MEDICAL_RECORD_STATUS_TH  = "5";
+
+
+    /**
+     * 检查状态
+     */
+    public static final String JCZT_DJF  = "1";  //代缴费
+    public static final String JCZT_YJF  = "2";  //已缴费
+    public static final String JCZT_YJC  = "3";  //已检查
+    public static final String JCZT_YTF  = "4";  //已退费
+
+
+    /**
+     * 检验状态
+     */
+    public static final String JYZT_DJF  = "1";  //代缴费
+    public static final String JYZT_YJF  = "2";  //已缴费
+    public static final String JYZT_YJC  = "3";  //已检查
+    public static final String JYZT_YTF  = "4";  //已退费
 }

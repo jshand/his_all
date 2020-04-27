@@ -66,8 +66,10 @@
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="../lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
 <script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 
 <script type="text/javascript">
+    window.loaded = function(){}
     var setting = {
         view: {
             dblClickExpand: false,
@@ -144,7 +146,9 @@
             { "data": "name"},
             { "data": "checkName"},
             { "data": "fee"},
-            { "data": "status"},
+            { "data": "status",render:function(status,type,row,meta){
+                    return constantsCache['JCZT_'+status];
+                }},
             { "data": "checkId"},
 
         ],
