@@ -222,6 +222,30 @@ public class XcghService {
     }
 
 
+    /**
+     * 批量退费
+     * @param applyCheckIds
+     * @param applyInspectIds
+     * @return
+     */
+    public boolean refund(Integer[] applyCheckIds, Integer[] applyInspectIds) {
+        String ytfCheck = HisConstants.JCZT_YTF;  //检查状态——已退费
+        String ytfInspect = HisConstants.JYZT_YTF; //检验状态——已退费
 
+        int coutAll = 0;
+        int countCheckIds = 0;
+        int countInspectIds = 0;
 
+        if(applyCheckIds!=null && applyCheckIds.length!=0){
+            coutAll += xcghExtMapper.updateApplyCheckingStatus(ytfCheck,applyCheckIds);
+            countCheckIds = applyCheckIds.length;
+        }
+
+        if(applyInspectIds!=null && applyInspectIds.length!=0){
+            coutAll += xcghExtMapper.updateApplyInspectStatus(ytfInspect,applyInspectIds);
+            countInspectIds = applyInspectIds.length;
+        }
+
+        return coutAll == (countCheckIds + countInspectIds);
+    }
 }

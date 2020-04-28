@@ -160,4 +160,19 @@ public class XcghController extends BaseController {
         return super.ajaxSucess(success);
     }
 
+
+    /**
+     * 退费 没有涉及到财务 只改变 申请检察、申请检验的状态变为已退费。
+     * @param applyCheckIds
+     * @param applyInspectIds
+     * @return
+     */
+    @RequestMapping("refund")
+    public Map refund(Integer[] applyCheckIds ,Integer[] applyInspectIds){
+
+        boolean  success = xcghService.refund(applyCheckIds , applyInspectIds);
+
+        return super.ajaxSucess(success);
+    }
+
 }
