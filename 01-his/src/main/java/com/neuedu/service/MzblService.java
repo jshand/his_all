@@ -214,4 +214,19 @@ public class MzblService {
     public List<ApplyInspectExt> queryApplyInspectWithMedicalId(Integer medicalId){
         return mzblMapper.queryApplyInspectWithMedicalId(medicalId);
     }
+
+    /**
+     * 诊毕
+     * @param medicalId
+     * @return
+     */
+    public boolean zhenbi(Integer medicalId) {
+
+        MedicalRecordWithBLOBs mr = new MedicalRecordWithBLOBs();
+        mr.setMedicalId(medicalId);
+        mr.setStatus(HisConstants.MEDICAL_RECORD_STATUS_YZB);  //4
+        int count = medicalRecordMapper.updateByPrimaryKeySelective(mr);
+
+        return count>0;
+    }
 }

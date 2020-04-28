@@ -47,7 +47,7 @@
 						<button onClick="save();" class="btn btn-primary radius" type="button">
 							<i class="Hui-iconfont">&#xe617;</i> 提交</button>
 
-						<button onClick="gh_submit();" class="btn btn-primary radius" type="button">
+						<button onClick="zhenbi();" class="btn btn-primary radius" type="button">
 							<i class="Hui-iconfont">&#xe617;</i> 诊毕</button>
 
 
@@ -114,7 +114,7 @@
         view: {
             dblClickExpand: false,
             showLine: false,
-            selectedMulti: false
+            selectedMulti: false,
         },
         data: {
             simpleData: {
@@ -142,8 +142,8 @@
 
         return true;
     }
-    
-    
+
+
     /**
      * 点击患者触发事件
      * @param event
@@ -163,6 +163,7 @@
 				treeNode.status+"&nbsp;&nbsp;&nbsp;"
 			)
 		$("#medicalId").val(treeNode.medicalId);
+		$("#status").val(treeNode.status);
 
 		$('#complaint').val(treeNode.complaint);
 		$('#cmHisotry').val(treeNode.cmHisotry);
@@ -221,6 +222,31 @@
 				}
 			}
 		})
+	}
+
+
+	function zhenbi(){
+    	var medicalId = $("#medicalId").val();
+
+    	if(medicalId && medicalId != ''){
+    		//如果状态是非提交状态 ，则不能看诊完毕
+			if($("#status").val() != 3){
+				layer.alert("当前病历非提交状态，不允许诊毕");
+				return ;
+			}
+
+			$.get('/mzbl/zhenbi/'+medicalId,function(data){
+				if(data.success){
+					layer.alert("设置成功",function(){
+						window.location.href   = window.location.href;
+					});
+				}
+
+			});
+		}else{
+    		layer.alert('请选择患者');
+		}
+
 	}
 </script>
 </body>

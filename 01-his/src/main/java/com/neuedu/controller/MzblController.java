@@ -155,4 +155,20 @@ public class MzblController extends BaseController {
 
         return pageReuslt(draw,page);
     }
+
+
+    /**
+     * 诊毕，
+     * @param medicalId
+     * @return
+     */
+    @RequestMapping("zhenbi/{meicalId}")
+    public Map zhenbi(@PathVariable(name = "meicalId") Integer medicalId){
+
+        boolean success = mzblService.zhenbi(medicalId);
+
+        return super.ajaxSucess(success);
+    }
+
+
 }

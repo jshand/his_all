@@ -33,7 +33,7 @@ public class HisConstants {
     public static final String MEDICAL_RECORD_STATUS_DZ = "1";
     public static final String MEDICAL_RECORD_STATUS_YJZ = "2";
     public static final String MEDICAL_RECORD_STATUS_YWZ = "3";
-    public static final String MEDICAL_RECORD_STATUS_ZYB = "4";
+    public static final String MEDICAL_RECORD_STATUS_YZB = "4";
     public static final String MEDICAL_RECORD_STATUS_TH  = "5";
 
 
