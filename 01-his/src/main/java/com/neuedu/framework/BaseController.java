@@ -16,11 +16,16 @@ import java.util.Map;
 public class BaseController {
 
     public Map ajaxSucess(boolean success){
-        Map result = new HashMap();
-        result.put("success",success);
-        return result;
+       return ajaxSucess(success,null);
     }
 
+
+    public Map ajaxSucess(boolean success,String msg){
+        Map result = new HashMap();
+        result.put("success",success);
+        result.put("msg",msg);
+        return result;
+    }
 
     /**
      * 返回分页结果

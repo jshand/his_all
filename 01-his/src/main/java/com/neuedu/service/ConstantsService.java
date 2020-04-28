@@ -1,7 +1,10 @@
 package com.neuedu.service;
 
+import com.neuedu.entity.Constants;
+import com.neuedu.entity.ConstantsExample;
 import com.neuedu.entity.ConstantsType;
 import com.neuedu.entity.ConstantsTypeExample;
+import com.neuedu.mapper.ConstantsMapper;
 import com.neuedu.mapper.ConstantsTypeMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,9 @@ public class ConstantsService {
 
     @Autowired
     ConstantsTypeMapper constantsTypeMapper;
+
+    @Autowired
+    ConstantsMapper constantsMapper;
 
 
     public List<ConstantsType> queryConstantsTypeByPage(ConstantsType constantsType) {
@@ -47,5 +53,23 @@ public class ConstantsService {
         record.setName(name);
         int count = constantsTypeMapper.insertSelective(record);
         return count>0;
+    }
+
+    public boolean constantsTypeDel(Integer typeId) throws Exception {
+
+        ConstantsType constantsType = constantsTypeMapper.selectByPrimaryKey(typeId);
+
+        //如果存在常量数据，不能删除，抛异常
+        ConstantsExample constantsEx = new ConstantsExample();
+        constantsEx.createCriteria().andConsTypeEqualTo(constantsType.getCode());
+        long count = constantsMapper.countByExample(constantsEx);
+        if(count>0){
+            throw new Exception("存在常量数据，不能删除");
+        }
+
+        //可以删除
+        int delCount = constantsTypeMapper.deleteByPrimaryKey(typeId);
+
+        return delCount>0;
     }
 }

@@ -50,4 +50,25 @@ public class ConstantsController extends BaseController {
         boolean success = constantsService.saveType(code,name);
         return super.ajaxSucess(success);
     }
+
+
+    /**
+     * 常量类别删除
+     * @param typeId
+     * @return
+     */
+    @RequestMapping("constantsTypeDel/{typeId}")
+    public Map constantsTypeDel(@PathVariable(name="typeId") Integer typeId){
+
+
+        boolean success = false;
+        String msg = "";
+        try {
+            success = constantsService.constantsTypeDel(typeId);
+        } catch (Exception e) {
+           msg = e.getMessage();
+        }
+
+        return super.ajaxSucess(success,msg);
+    }
 }
