@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.neuedu.entity.Constants;
 import com.neuedu.entity.ConstantsType;
-import com.neuedu.entity.Role;
 import com.neuedu.framework.BaseController;
 import com.neuedu.service.ConstantsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +20,7 @@ import java.util.Map;
  * 创建时间 ：2020/4/28  11:27 28
  * author  ：jshand-root
  * site    :  http://314649444.iteye.com
- * 描述     : 常数相关的控制器
+ * 描述     : 常数   相关的控制器
  */
 @RestController
 @RequestMapping("constants")
@@ -31,6 +29,14 @@ public class ConstantsController extends BaseController {
     @Autowired
     ConstantsService constantsService;
 
+    /**
+     * 常数类别的分页查询
+     * @param start
+     * @param pageSize
+     * @param draw
+     * @param constantsType
+     * @return
+     */
     @RequestMapping("constantsTypePageList")
     public Map constantsTypePageList(
             @RequestParam(defaultValue = "0") int start,
@@ -46,6 +52,29 @@ public class ConstantsController extends BaseController {
     }
 
     /**
+     * 常数项 分页查询
+     * @param start
+     * @param pageSize
+     * @param draw
+     * @param constants
+     * @return
+     */
+    @RequestMapping("constantsPageList")
+    public Map constantsPageList(
+            @RequestParam(defaultValue = "0") int start,
+            @RequestParam(value ="length",defaultValue = "10") int pageSize,
+            int draw  , Constants constants){
+
+
+        Page<Constants> page = PageHelper.offsetPage(start,pageSize);
+
+        List<Constants> data = constantsService.queryConstantsByPage(constants);
+
+        return super.pageReuslt(draw,page);
+    }
+
+
+    /**
      * 新增常数列别
      * @param code
      * @param name
@@ -54,6 +83,13 @@ public class ConstantsController extends BaseController {
     @RequestMapping("saveType/{code}/{name}")
     public Map saveType(@PathVariable(name="code") String code ,@PathVariable(name="name") String name){
         boolean success = constantsService.saveType(code,name);
+        return super.ajaxSucess(success);
+    }
+
+
+    @RequestMapping("saveConstants")
+    public Map saveType(Constants constants){
+        boolean success = constantsService.saveConstants(constants);
         return super.ajaxSucess(success);
     }
 

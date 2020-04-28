@@ -41,6 +41,28 @@ public class ConstantsService {
         return constantsTypeMapper.selectByExample(ex);
     }
 
+
+    public List<Constants> queryConstantsByPage(Constants constants) {
+        ConstantsExample ex = new ConstantsExample();
+        ConstantsExample.Criteria cre = ex.createCriteria(); // ()
+
+
+        if(StringUtils.isNotBlank(constants.getConsType())){
+            cre.andConsTypeLike("%"+constants.getConsType()+"%");  // and code like '%xx%';
+        }
+        if(StringUtils.isNotBlank(constants.getConsCode())){
+            cre.andConsCodeLike("%"+constants.getConsCode()+"%");  // and code like '%xx%';
+        }
+
+        if(StringUtils.isNotBlank(constants.getConsName())){
+            cre.andConsNameLike("%"+constants.getConsName()+"%");  // and code like '%xx%';
+        }
+
+        ex.setOrderByClause(" cons_type ");
+
+        return constantsMapper.selectByExample(ex);
+    }
+
     /**
      * 保存 常数类别（代码、名称）
      * @param code
@@ -97,5 +119,14 @@ public class ConstantsService {
         constantType.setName(name);
 
         return constantsTypeMapper.updateByPrimaryKey(constantType) >0;
+    }
+
+    /**
+     * 保存常数项信息
+     * @param constants
+     * @return
+     */
+    public boolean saveConstants(Constants constants) {
+        return constantsMapper.insertSelective(constants) >0;
     }
 }
