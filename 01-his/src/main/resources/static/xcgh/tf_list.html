@@ -43,14 +43,17 @@
 
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l"><a href="javascript:;" onclick="pltf()" class="btn btn-primary radius">
-		<i class="Hui-iconfont">&#xe6e2;</i> 批量退费</a></span>  </div>
+		<i class="Hui-iconfont">&#xe6e2;</i> 批量退费</a></span>
+
+		<span style="line-height: 31px;margin-left: 10px">应退金额：￥<span id="amount">0.00</span></span>
+	</div>
 
 
 	<div class="mt-20">
 		<table id="feeTab" class="table table-border table-bordered table-bg table-sort">
 			<thead>
 				<tr class="text-c">
-					<th width="25"><input type="checkbox" name="" value=""></th>
+					<th width="25"><input type="checkbox" name="myselect" value="" ></th>
 
 					<th width="70">病历号</th>
 					<th width="70">患者姓名</th>
@@ -93,7 +96,8 @@ window.loaded = function(){
 		"columns":[  //每行的列 取值的方式
 			{ "data": "applyId",render:function(applyId,tt,row){
 				var type = row.type;
-				return '<input name="applyId" type="checkbox" data-type="'+type+'" value="'+applyId+'">';
+				var status = row.status;
+				return '<input name="applyId" onclick="judge(this)" type="checkbox"  data-type="'+type+'"   data-status="'+status+'" value="'+applyId+'">';
 				} },
 			{ "data": "medicalId" },
 			{ "data": "name" },
@@ -128,10 +132,42 @@ window.loaded = function(){
 		}
 	});
 
+
+	$("input[name='myselect']").unbind("click");
+
+	$("input[name='myselect']").click(function(){
+		var selectAll = $(this).prop('checked');
+		//找到复选框并且 状态是已缴费的，才可能选中去退费
+		$("input[name=applyId][data-status=2]").prop("checked",$(this).prop('checked'));
+		calAmount();
+	})
+
+}
+
+
+function judge(ck){
+
+	if($(ck).attr('data-status') != 2 ){
+		$(ck).prop("checked",false)
+	}
+
+	calAmount();
 }
 
 
 
+function calAmount(){
+	var applyIds = $("input[name=applyId]:checked");
+	var sum = 0;
+	$.each(applyIds,function(index,ck){
+		var tr = $(ck).parent().parent()
+		var td = tr.find("td:eq(6)");
+		sum += parseFloat(td.text());
+	})
+
+	$("#amount").text(sum);
+
+}
 
 function queryFee(){
 	$('#feeTab').DataTable().ajax.reload();
@@ -175,6 +211,8 @@ function pltf(){
 		},
 		success:function(data){
 			if(data.success){
+
+				$("#amount").html('0.00');
 				layer.alert("已退费成功",function(index){
 					layer.close(index);
 					//刷新table
