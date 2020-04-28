@@ -45,9 +45,25 @@ public class ConstantsController extends BaseController {
         return super.pageReuslt(draw,page);
     }
 
+    /**
+     * 新增常数列别
+     * @param code
+     * @param name
+     * @return
+     */
     @RequestMapping("saveType/{code}/{name}")
     public Map saveType(@PathVariable(name="code") String code ,@PathVariable(name="name") String name){
         boolean success = constantsService.saveType(code,name);
+        return super.ajaxSucess(success);
+    }
+
+    @RequestMapping("editType/{typeId}/{code}/{name}")
+    public Map editType(
+            @PathVariable(name="typeId") Integer typeId ,
+            @PathVariable(name="code") String code,
+            @PathVariable(name="name") String name){
+        boolean success = constantsService.editType(typeId,code,name);
+
         return super.ajaxSucess(success);
     }
 
@@ -71,4 +87,24 @@ public class ConstantsController extends BaseController {
 
         return super.ajaxSucess(success,msg);
     }
+
+
+    /**
+     * 根据主键查询常数类别
+     * http://127.0.0.1:80/constants/constantsTypeQuery/2
+     * @param typeId
+     * @return
+     */
+    @RequestMapping("constantsTypeQuery/{typeId}")
+    public ConstantsType constantsTypeQuery(@PathVariable(name="typeId") Integer typeId){
+
+        ConstantsType constantsType = constantsService.constantsTypeQuery(typeId);
+
+        return constantsType;
+    }
+
+
+
+
+
 }

@@ -72,4 +72,30 @@ public class ConstantsService {
 
         return delCount>0;
     }
+
+    /**
+     * 根据主键查询常数类别
+     * @param typeId
+     * @return
+     */
+    public ConstantsType constantsTypeQuery(Integer typeId) {
+        return constantsTypeMapper.selectByPrimaryKey(typeId);
+    }
+
+    /**
+     * 修改 常数类别
+     * @param typeId
+     * @param code
+     * @param name
+     * @return
+     */
+    public boolean editType(Integer typeId, String code, String name) {
+
+        ConstantsType constantType = new ConstantsType();
+        constantType.setTypeId(typeId);
+        constantType.setCode(code);
+        constantType.setName(name);
+
+        return constantsTypeMapper.updateByPrimaryKey(constantType) >0;
+    }
 }
