@@ -104,6 +104,16 @@ public class ConstantsService {
         return constantsTypeMapper.selectByPrimaryKey(typeId);
     }
 
+
+    /**
+     * 根据主键查询常数类别
+     * @param consId
+     * @return
+     */
+    public Constants constantsQuery(Integer consId) {
+        return constantsMapper.selectByPrimaryKey(consId);
+    }
+
     /**
      * 修改 常数类别
      * @param typeId
@@ -128,5 +138,28 @@ public class ConstantsService {
      */
     public boolean saveConstants(Constants constants) {
         return constantsMapper.insertSelective(constants) >0;
+    }
+
+
+
+    /**
+     * 修改常数项信息
+     * @param constants
+     * @return
+     */
+    public boolean editConstants(Constants constants) {
+        return constantsMapper.updateByPrimaryKeySelective(constants) >0;
+    }
+
+
+
+    /**
+     * 删除常数项信息
+     * @param consId
+     * @return
+     */
+    public boolean constantsDel(Integer consId) {
+
+        return constantsMapper.deleteByPrimaryKey(consId) >0;
     }
 }

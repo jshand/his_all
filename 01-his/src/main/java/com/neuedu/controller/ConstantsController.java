@@ -87,11 +87,32 @@ public class ConstantsController extends BaseController {
     }
 
 
+    /**
+     * 添加常数项
+     * @param constants
+     * @return
+     */
     @RequestMapping("saveConstants")
     public Map saveType(Constants constants){
         boolean success = constantsService.saveConstants(constants);
         return super.ajaxSucess(success);
     }
+
+
+    /**
+     * 修改常数项
+     * @param constants
+     * @return
+     */
+    @RequestMapping("editConstants")
+    public Map editConstants(Constants constants){
+        boolean success = constantsService.editConstants(constants);
+        return super.ajaxSucess(success);
+    }
+
+
+
+
 
     @RequestMapping("editType/{typeId}/{code}/{name}")
     public Map editType(
@@ -125,6 +146,21 @@ public class ConstantsController extends BaseController {
     }
 
 
+
+    /**
+     * 常量类别删除
+     * @param consId
+     * @return
+     */
+    @RequestMapping("constantsDel/{consId}")
+    public Map constantsDel(@PathVariable(name="consId") Integer consId){
+
+
+        boolean  success = constantsService.constantsDel(consId);
+
+
+        return super.ajaxSucess(success);
+    }
     /**
      * 根据主键查询常数类别
      * http://127.0.0.1:80/constants/constantsTypeQuery/2
@@ -138,6 +174,23 @@ public class ConstantsController extends BaseController {
 
         return constantsType;
     }
+
+    /**
+     * 根据主键查询常数类别
+     * http://127.0.0.1:80/constants/constantsQuery/2
+     * @param consId
+     * @return
+     */
+    @RequestMapping("constantsQuery/{consId}")
+    public Constants constantsQuery(@PathVariable(name="consId") Integer consId){
+
+        Constants constants = constantsService.constantsQuery(consId);
+
+        return constants;
+    }
+
+
+
 
 
 
