@@ -30,37 +30,39 @@
 </head>
 <body>
 <div class="page-container">
-	<form action="" method="post" class="form form-horizontal" id="form">
-		<input type="hidden" name="consId" id="consId" value="" />
+	<form action="" method="post" class="form form-horizontal" id="userForm">
+		<input type="hidden" id="userId" name="userId" value="" />
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>类型：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用户名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="hidden" id="consTypeHidden" value=""/>
-				<span class="select-box">
-				<select class="select" id="consType" name="consType"  >
-					<option value="" >请选择类型</option>
-
-				</select>
-				</span>
-
+				<input type="text" class="input-text" value="" placeholder="" id="userName" name="userName">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>编码：</label>
+			<label class="form-label col-xs-4 col-sm-2">密码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="consCode" name="consCode">
+				<input type="password" class="input-text" value="" placeholder="" id="password" name="password">
+			</div>
+		</div>
+
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>昵称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="displayName" name="displayName">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">名称：</label>
+			<label class="form-label col-xs-4 col-sm-2">归属医生：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="consName" name="consName">
+
+				<input type="text" class="input-text" value="" placeholder="" id="docId" name="docId">
 			</div>
 		</div>
 
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="constatnsFormSubmit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+				<button onClick="userFormSubmit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
 			</div>
 		</div>
 	</form>
@@ -83,57 +85,26 @@
 <script type="text/javascript" src="../lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
 
-
-	var consId = parent.consId;
-	$("#consId").val(consId);
-
+	var userId = parent.userId;
+	$("#userId").val(userId);
 
 	$(function(){
-		$.get('/constants/constantsQuery/'+consId,function(data){
-
-			$("#consId").val(data.consId);
-			$("#consTypeHidden").val(data.consType); //给隐藏域赋值
-			$("#consCode").val(data.consCode);
-			$("#consName").val(data.consName);
-			//加载下拉选的列表
-
-			$.get('/constants/constantsTypePageList?draw=1&length=99999',function(data){
-				$.each(data.data,function(index,constantsType){
-					var code = constantsType.code;
-					var name = constantsType.name;
-					var selected = " ";
-					if(code == $("#consTypeHidden").val() ){
-						selected = "selected = 'selected' "
-					}
-					$("#consType").append('<option value="'+code+'" '+selected+'>'+name+'</option>');
-				})
-			})
-
-		})
-	})
-
-
-
-
-	$(function(){
-		//length =999 以为着不想分页，一页都查询出来
-		$.get('/constants/constantsTypePageList?draw=1&length=99999',function(data){
-			$.each(data.data,function(index,constantsType){
-				var code = constantsType.code;
-				var name = constantsType.name;
-				$("#consType").append('<option value="'+code+'">'+name+'</option>');
-			})
+		//初始化页面控件
+		$.get("/user/queryById/"+userId,function(user){
+			$("#userName").val(user.userName);
+			$("#password").val(user.password);
+			$("#displayName").val(user.displayName);
+			$("#docId").val(user.docId);
 		})
 
 	})
 
 
+	function userFormSubmit(){
 
-	function constatnsFormSubmit(){
-
-		var url ='/constants/editConstants';
+		var url ='/user/edit';
 		$.ajax(url,{
-			data:$("#form").serialize(),
+			data:$("#userForm").serialize(),
 			success:function(data){
 				layer.alert('保存成功',function(index){
 					// 刷新页面的表格
@@ -142,8 +113,6 @@
 				})
 			}
 		})
-
-
 	}
 
 </script>
