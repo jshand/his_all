@@ -8,6 +8,7 @@ import com.neuedu.framework.BaseController;
 import com.neuedu.framework.cache.HisCache;
 import com.neuedu.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,8 +77,42 @@ public class DeptController extends BaseController {
     }
 
 
+    /**
+     * 根据主键查询部门 信息
+     * @param deptCode
+     * @return
+     */
+    @RequestMapping("queryById/{deptCode}")
+    public Dept queryById(@PathVariable(name="deptCode") Integer deptCode){
+
+        Dept dept = deptService.queryById(deptCode);
+
+        return dept;
+    }
+
+    /**
+     * 新增部门信息
+     * @param dept
+     * @return
+     */
+    @RequestMapping("edit")
+    public Map edit(Dept dept){
+
+        boolean success = deptService.edit(dept);
+        return super.ajaxSucess(success);
+    }
 
 
+    /**
+     * 新增部门信息
+     * @param deptCode
+     * @return
+     */
+    @RequestMapping("del/{deptCode}")
+    public Map del(@PathVariable(name="deptCode") Integer deptCode){
 
+        boolean success = deptService.del(deptCode);
+        return super.ajaxSucess(success);
+    }
 
 }

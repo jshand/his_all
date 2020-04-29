@@ -44,7 +44,7 @@
 			<i class="Hui-iconfont">&#xe600;</i> 添加</a>
 		</span>  </div>
 	<div class="mt-20">
-		<table id="constantsTypeTab" class="table table-border table-bordered table-bg table-sort">
+		<table id="deptTab" class="table table-border table-bordered table-bg table-sort">
 			<thead>
 				<tr class="text-c">
 					<th width="25"><input type="checkbox" name="" value=""></th>
@@ -75,7 +75,7 @@
 //找到表格加载服务器端的数据
 window.loaded = function(){
 
-	$('#constantsTypeTab').dataTable({
+	$('#deptTab').dataTable({
 		"processing": true,  //显示是否正在处理中
 		"serverSide": true,  //表示数据重服务器中加载
 		"paging":true,
@@ -89,6 +89,7 @@ window.loaded = function(){
 			{ "data": "deptName" },
 			{ "data": "deptLeader" },
 			{ "data": "parentCode" },
+			// { "data": "deptType" },
 			{ "data": "deptType" ,render:function(deptType){
 				return constantsCache['BMLX_'+deptType]
 				}},
@@ -122,11 +123,11 @@ function add(){
 	});
 }
 
-var consId = null;
-function edit(id){
-	consId  = id;
-	var url="./constants_edit.html";
-	var title="修改常数项";
+var deptCode = null;
+function edit(dcode){
+	deptCode  = dcode;
+	var url="./dept_edit.html";
+	var title="修改部门信息";
 	index = layer.open({
 		type: 2,
 		title: title,
@@ -136,7 +137,7 @@ function edit(id){
 }
 
 function del(id){
-	$.get('/constants/constantsDel/'+id,function(data){
+	$.get('/dept/del/'+id,function(data){
 		if(data.success){
 			layer.alert("删除成功",function(index){
 				layer.close(index);
@@ -150,7 +151,7 @@ function del(id){
 
 function query(){
 	//刷新页面table
-	$('#constantsTypeTab').DataTable().ajax.reload();
+	$('#deptTab').DataTable().ajax.reload();
 }
 
 
