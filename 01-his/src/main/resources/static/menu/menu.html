@@ -35,7 +35,31 @@
                 </td>
                 <td class="va-t">
 
-                   右侧是一个待修改的 菜单form
+                    <div class="text-c" style="padding-right: 100px;">
+                        <form action="" class="form form-horizontal" id="mzblForm">
+                            <input type="text" id="menuId" name="menuId" value="" />
+                            <div class="row cl">
+                                <label class="form-label  col-sm-3">菜单名称：</label>
+                                <div class="formControls col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="menuName" name="menuName" />
+                                </div>
+                            </div>
+
+                            <div class="row cl">
+                                <label class="form-label  col-sm-3">url：</label>
+                                <div class="formControls col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="url" name="url" />
+                                </div>
+                            </div>
+
+                            <div class="row cl">
+                                <label class="form-label  col-sm-3">上级菜单：</label>
+                                <div class="formControls col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="parentId" name="parentId" />
+                                </div>
+                            </div>
+                        </form>
+                    </div
 
                 </td>
             </tr>
@@ -59,17 +83,24 @@
                         pIdKey: "parentId"
                     },
                     key: {
-                        name: "menuName"
+                        name: "menuName",
+                        url:'aaurl' //渲染tree的 url用设置一个没有的属性，这样不会触发超链接的href属性
                     }
+                },
+                callback: {
+                    onClick: zTreeOnClick
                 }
 
             }; //tree 的配置项
-            // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
-            // var zNodes = [
-            //     {id:1, pId:0, name: "父节点1",open:true},
-            //     {id:11, pId:1, name: "子节点1"},
-            //     {id:12, pId:1, name: "子节点2"}
-            // ];
+
+
+            function zTreeOnClick(event, treeId, treeNode){
+                console.info(treeNode);
+                $("#menuId").val(treeNode.menuId);
+                $("#parentId").val(treeNode.parentId);
+                $("#menuName").val(treeNode.menuName);
+                $("#url").val(treeNode.url);
+            }
             var zNodes = [];
             $(document).ready(function(){
                 let url = '/menu/simpleMenuData';
