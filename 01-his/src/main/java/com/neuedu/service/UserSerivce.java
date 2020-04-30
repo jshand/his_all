@@ -1,10 +1,10 @@
 package com.neuedu.service;
 
-import com.neuedu.entity.Dept;
-import com.neuedu.entity.User;
-import com.neuedu.entity.UserExample;
+import com.neuedu.entity.*;
 import com.neuedu.framework.HisConstants;
+import com.neuedu.mapper.PowerMapper;
 import com.neuedu.mapper.UserMapper;
+import com.neuedu.mapper.UserRoleMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,5 +79,69 @@ public class UserSerivce {
         user.setIsDel(HisConstants.RECORD_IS_DEL_TRUE); //删除的状态
 
         return userMapper.updateByPrimaryKeySelective(user) > 0 ;
+    }
+
+
+    @Autowired
+    UserRoleMapper userRoleMapper;
+
+    public boolean grant(Integer userId, Integer[] roleIds) {
+
+        //先删除已授权的角色，
+        UserRoleExample userRoleExample = new UserRoleExample();
+        userRoleExample.createCriteria().andUserIdEqualTo(userId); // delete from t_user_role where user_id = ?
+        userRoleMapper.deleteByExample(userRoleExample);
+
+
+        //插入用户权限
+        int count = 0;
+        for (Integer roleId : roleIds) {
+            UserRoleKey userRole = new UserRoleKey();
+            userRole.setUserId(userId);
+            userRole.setRoleId(roleId);
+            count += userRoleMapper.insertSelective(userRole);
+        }
+
+
+        return count == roleIds.length;
+
+    }
+
+    @Autowired
+    PowerMapper powerMapper;
+    /**
+     *
+     * @param userId
+     * @return
+     */
+
+    public String queryMenu(Integer userId) {
+        StringBuffer html = new StringBuffer();
+       List<Menu> list =  powerMapper.queryMenu(userId);
+
+        for (Menu menu : list) {
+            if(menu.getParentId()!=null && menu.getParentId() == 0){
+                html.append("<dl id=\"menu-constants\">\n" +
+                        "\t\t\t<dt><i class=\"Hui-iconfont\">&#xe620;</i>"+menu.getMenuName()+"<i class=\"Hui-iconfont menu_dropdown-arrow\">&#xe6d5;</i></dt>\n" +
+                        "\t\t\t<dd>\n" +
+                        "\t\t\t\t<ul>");
+
+                appendChild(menu,list,html);
+
+
+                html.append("</ul>\n" +
+                        "\t\t</dd> </dl>");
+            }
+        }
+
+        return html.toString();
+    }
+
+    private void appendChild(Menu menu ,List<Menu> list, StringBuffer html) {
+        for (Menu menu1 : list) {
+            if(menu.getMenuId() == menu1.getParentId()){
+                html.append("\t\t\t\t\t<li><a data-href=\""+menu1.getUrl()+"\" data-title=\""+menu1.getMenuName()+"\" href=\"javascript:void(0)\">"+menu1.getMenuName()+"</a></li>\n");
+            }
+        }
     }
 }

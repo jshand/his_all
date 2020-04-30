@@ -253,6 +253,7 @@ $(function(){
 			$(".Hui-aside").slideToggle();
 		}
 	});
+
 	/*左侧菜单*/
 	$(".Hui-aside").Huifold({
 		titCell:'.menu_dropdown dl dt',

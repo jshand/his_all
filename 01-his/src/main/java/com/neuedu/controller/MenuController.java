@@ -4,6 +4,7 @@ import com.neuedu.entity.Menu;
 import com.neuedu.framework.BaseController;
 import com.neuedu.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,6 +60,13 @@ public class MenuController extends BaseController {
     public Map save(Menu menu){
 
         boolean success = menuService.save(menu);
+        return super.ajaxSucess(success);
+    }
+
+
+    @RequestMapping("setParentId/{menuId}/{parentId}")
+    public Map setParentId(@PathVariable(name="menuId")Integer menuId , @PathVariable(name="parentId")Integer parentId ){
+        boolean success = menuService.setParentId(menuId,parentId);
         return super.ajaxSucess(success);
     }
 

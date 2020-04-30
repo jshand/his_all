@@ -22,13 +22,7 @@
 <title>品牌管理</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
-	<span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span>
-	角色管理
-	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
-	   href="../javascript:location.replace(location.href);" title="刷新" >
-		<i class="Hui-iconfont">&#xe68f;</i></a>
-</nav>
+
 <div class="page-container">
 	<div class="text-c">
 		<form class="Huiform" method="post" action="" target="_self">
@@ -38,8 +32,8 @@
 		</form>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
-		<span class="l"><a href="../javascript:;" onclick="datadel()" class="btn btn-danger radius">
-		<i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span>  </div>
+		<span class="l"><a href="javascript:void(0);" onclick="grant()" class="btn btn-danger radius">
+		<i class="Hui-iconfont">&#xe6e2;</i> 授权</a></span>  </div>
 	<div class="mt-20">
 		<table id="roleTab" class="table table-border table-bordered table-bg table-sort">
 			<thead>
@@ -64,6 +58,11 @@
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 
+	var userId = parent.userId;
+
+
+
+
 //找到表格加载服务器端的数据
 $('#roleTab').dataTable({
 	"processing": true,  //显示是否正在处理中
@@ -72,8 +71,8 @@ $('#roleTab').dataTable({
 	"ajax": "/role/pageList",  //表示加载数据的路径,
 	"columns":[  //每行的列 取值的方式
 		{ "data": "roleId", "align":"center",
-			"render":function(data, type, row, meta){
-			return '<input name="" type="checkbox" value="'+row.id+'">';
+			"render":function(roleId, type, row, meta){
+			return '<input name="roleId" type="checkbox" value="'+roleId+'">';
 			} },
 		{ "data": "roleName" },
 		{ "data": "roleId" ,"render":function(roleId, type, row, meta){
@@ -115,6 +114,38 @@ function grant(rId){
 	});
 
 }
+
+	/**
+	 * 给用户授权角色
+	 */
+	function grant(){
+		//userId
+		//roleIds
+		var roleIds = [];
+		$("input[name='roleId']:checked").each(function(index,ck){
+			roleIds.push($(ck).val());
+		});
+
+
+		var url = '/user/grant'
+		$.ajax(url,{
+			traditional: true,
+			data:{
+				userId:userId,
+				roleIds:roleIds
+			},
+			success:function(data){
+				layer.alert("授权成功");
+				var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+				parent.layer.close(index)
+			}
+
+		})
+
+
+	}
+
+
 
 
 </script>

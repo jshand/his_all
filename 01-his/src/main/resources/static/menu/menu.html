@@ -131,11 +131,34 @@
                         url:'aaurl' //渲染tree的 url用设置一个没有的属性，这样不会触发超链接的href属性
                     }
                 },
+                edit: {
+                    enable: true
+                },
                 callback: {
-                    onClick: zTreeOnClick
+                    onClick: zTreeOnClick,
+                    onDrop: zTreeOnDrop,
+                    onRemove: zTreeOnRemove
                 }
 
             }; //tree 的配置项
+
+
+            function zTreeOnRemove(a,b,treeNode){
+                // treeNode.menuId;
+                alert('移除菜单项目：'+treeNode.menuId);
+
+            }
+            //拖拽的事件
+            function zTreeOnDrop(event, treeId, treeNodes,targetNode) {
+                var dragNode = treeNodes[0];
+                var parentId = targetNode.menuId; //想要获取 释放之后的父节点
+                var menuId = dragNode.menuId;
+
+                //update emnu set par = ? where id = ?
+                $.get('/menu/setParentId/'+menuId+"/"+parentId,function(){
+                    layer.alert("设置成功");
+                });
+            }
 
 
             function zTreeOnClick(event, treeId, treeNode){

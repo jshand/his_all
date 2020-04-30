@@ -58,4 +58,18 @@ public class MenuService {
         return menuMapper.insertSelective(menu) >0;
 
     }
+
+    /**
+     * 设置上级Id
+     * @param menuId
+     * @param parentId
+     * @return
+     */
+    public boolean setParentId(Integer menuId, Integer parentId) {
+
+        Menu menu = new Menu();
+        menu.setMenuId(menuId);
+        menu.setParentId(parentId);
+        return menuMapper.updateByPrimaryKeySelective(menu) >0;
+    }
 }

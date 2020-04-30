@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="renderer" content="webkit|ie-comp|ie-stand">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport"
+              content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+        <meta http-equiv="Cache-Control" content="no-siteapp"/>
+        <!--[if lt IE 9]>
+        <script type="text/javascript" src="../lib/html5shiv.js"></script>
+        <script type="text/javascript" src="../lib/respond.min.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css"/>
+        <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css"/>
+        <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css"/>
+        <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin"/>
+        <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css"/>
+        <link rel="stylesheet" href="../lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+        <!--[if IE 6]>
+        <script type="text/javascript" src="../lib/DD_belatedPNG_0.0.8a-min.js"></script>
+        <script>DD_belatedPNG.fix('*');</script>
+        <![endif]-->
+        <title>产品分类</title>
+    </head>
+    <body>
+        <a href="javascript:void(0);" onclick="grant()" class="btn btn-primary radius">  <i class="Hui-iconfont">&#xe6e2;</i> 授权</a>
+
+        <ul id="menuTree" class="ztree"></ul>
+
+
+        <!--_footer 作为公共模版分离出去-->
+        <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+        <script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+        <script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+        <!--请在下方写此页面业务相关的脚本-->
+        <script type="text/javascript" src="../lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+        <script type="text/javascript">
+            var roleId = parent.roleId;
+
+            // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+            var setting = {
+                check: {
+                    enable: true
+                },
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "menuId",
+                        pIdKey: "parentId"
+                    },
+                    key: {
+                        name: "menuName",
+                        url:'aaurl' //渲染tree的 url用设置一个没有的属性，这样不会触发超链接的href属性
+                    }
+                },
+                // edit: {
+                //     enable: true
+                // },
+                callback: {
+
+                }
+
+            }; //tree 的配置项
+
+            var zNodes = [];
+            var treeObj = null;
+            $(document).ready(function(){
+                let url = '/menu/simpleMenuData';
+                $.get(url,function(menuList){
+                    zNodes = menuList;
+
+                    treeObj = $.fn.zTree.init($("#menuTree"), setting, zNodes);
+
+                    // var treeObj = $.fn.zTree.getZTreeObj("tree");
+                    treeObj.expandAll(true);
+
+                    //获取已授权的 菜单项目,并勾选
+                    $.get('/role/queryRoleMenu/'+roleId,function(roleMenus){
+                        $(roleMenus).each(function(index,roleMenu){
+                            // alert('应该选中的菜单id：'+roleMenu.menuId);
+                            var mid = roleMenu.menuId+"";
+                            var node = treeObj.getNodesByParam("menuId", mid, null)[0];
+                            treeObj.checkNode(node, true, false);//选中改节点
+
+                        })
+                    })
+
+
+
+
+                })
+            });
+
+
+            /**
+             * 给角色授权菜单
+             */
+            function grant(){
+                //roleId
+
+                //获取选中的菜单项目的 MenuId  【】
+                var nodes = treeObj.getCheckedNodes(true);
+                var menuIds = [];
+                $(nodes).each(function(index,menu){
+                    menuIds.push(menu.menuId);
+                });
+
+                //alert(menuIds.join('*(*('));
+
+                //?menuIds[]=1&menuIds[]=2
+                //?menuIds=1&menuIds=2
+                var url = '/role/grant'
+                $.ajax(url,{
+                    traditional: true,
+                    data:{
+                        roleId:roleId,
+                        menuIds:menuIds
+                    },
+                    success:function(data){
+                        layer.alert("授权成功");
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index)
+                    }
+
+                })
+
+            }
+
+
+
+        </script>
+    </body>
+</html>

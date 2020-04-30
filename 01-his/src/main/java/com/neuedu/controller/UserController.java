@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.neuedu.entity.Dept;
 import com.neuedu.entity.User;
 import com.neuedu.framework.BaseController;
+import com.neuedu.framework.HisConstants;
 import com.neuedu.framework.cache.HisCache;
 import com.neuedu.service.DeptService;
 import com.neuedu.service.UserSerivce;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -106,4 +108,31 @@ public class UserController extends BaseController {
         boolean success = userSerivce.del(userId);
         return super.ajaxSucess(success);
     }
+
+
+
+
+    @RequestMapping("grant")
+    public Map  grant(Integer userId, Integer[] roleIds){
+
+        boolean success = userSerivce.grant(userId,roleIds);
+
+        return super.ajaxSucess(success);
+    }
+
+
+    /**
+     * 根据登录的用户查询 菜单权限
+     */
+    @RequestMapping("queryMenu")
+    public String queryMenu(HttpSession session){
+        User user = (User) session.getAttribute(HisConstants.LOGIN_USER);
+        Integer userId = user.getUserId();
+
+        String menuHtml = userSerivce.queryMenu(userId);
+
+        return menuHtml;
+    }
+
+
 }

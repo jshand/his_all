@@ -71,6 +71,10 @@
 </div>
 </header>
 <aside class="Hui-aside">
+
+	<div class="menu_dropdown bk_2" id="menu">
+	</div>
+<!--
 	<div class="menu_dropdown bk_2">
 		<dl id="menu-gh">
 			<dt><i class="Hui-iconfont">&#xe620;</i>挂号收费<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
@@ -120,6 +124,7 @@
 		</dd>
 	</dl>
 </div>
+-->
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
 <section class="Hui-article-box">
@@ -216,6 +221,18 @@ function member_add(title,url,w,h){
 	layer_show(title,url,w,h);
 }
 
+	$.ajax('/user/queryMenu',{
+		dataType:'html',
+		success:function(html){
+			$("#menu").html(html);
+
+			/*左侧菜单*/
+			$(".Hui-aside").Huifold({
+				titCell:'.menu_dropdown dl dt',
+				mainCell:'.menu_dropdown dl dd',
+			});
+		}
+	})
 
 </script> 
 

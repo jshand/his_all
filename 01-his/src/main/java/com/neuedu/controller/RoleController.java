@@ -3,9 +3,13 @@ package com.neuedu.controller;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.neuedu.entity.Role;
+import com.neuedu.entity.RoleMenuKey;
+import com.neuedu.framework.BaseController;
 import com.neuedu.mapper.RoleMapper;
+import com.neuedu.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +28,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("role")
-public class RoleController {
+public class RoleController extends BaseController {
 
 
     @Autowired
@@ -68,6 +72,38 @@ public class RoleController {
     }
 
 
+    @Autowired
+    RoleService roleService;
 
+
+    @RequestMapping("grant")
+    public Map  grant(Integer roleId, Integer[] menuIds){
+
+        boolean success = roleService.grant(roleId,menuIds);
+
+        return super.ajaxSucess(success);
+    }
+
+
+    /**
+     *
+     * @param roleId
+     * @return
+     *
+     * [
+     *      {role:'5',menuId:'1'},
+     *      {role:'5',menuId:'2'},
+     *      {role:'5',menuId:'3'},
+     *      {role:'5',menuId:'4'},
+     *
+     * ]
+     */
+    @RequestMapping("queryRoleMenu/{roleId}")
+    public List<RoleMenuKey>   queryRoleMenu(@PathVariable(name="roleId") Integer roleId){
+
+        List<RoleMenuKey> list = roleService.queryRoleMenu(roleId);
+
+        return list;
+    }
 
 }
