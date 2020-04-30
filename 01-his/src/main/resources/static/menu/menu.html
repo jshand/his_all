@@ -31,13 +31,17 @@
         <table class="table">
             <tr>
                 <td width="200" class="va-t">
+
+                    <button onClick="showAddForm();" class="btn btn-primary radius" type="button">
+                        <i class="Hui-iconfont">&#xe617;</i> 添加菜单</button>
+
                     <ul id="menuTree" class="ztree"></ul>
                 </td>
                 <td class="va-t">
 
                     <div class="text-c" style="padding-right: 100px;">
-                        <form action="" class="form form-horizontal" id="mzblForm">
-                            <input type="text" id="menuId" name="menuId" value="" />
+                        <form action="" class="form form-horizontal" id="editForm" style="display: none">
+                            <input type="hidden" id="menuId" name="menuId" value="" />
                             <div class="row cl">
                                 <label class="form-label  col-sm-3">菜单名称：</label>
                                 <div class="formControls col-sm-9">
@@ -52,14 +56,54 @@
                                 </div>
                             </div>
 
-                            <div class="row cl">
+                            <div class="row cl" style="display:none ">
                                 <label class="form-label  col-sm-3">上级菜单：</label>
                                 <div class="formControls col-sm-9">
                                     <input type="text" class="input-text" value="" placeholder="" id="parentId" name="parentId" />
                                 </div>
                             </div>
+
+
+                            <div class="row cl">
+                                <button onClick="edit();" class="btn btn-primary radius" type="button">
+                                    <i class="Hui-iconfont">&#xe617;</i> 修改</button>
+                            </div>
                         </form>
-                    </div
+
+
+
+
+                        <form action="" class="form form-horizontal" id="AddForm" style="display: none">
+                            <div class="row cl">
+                                <label class="form-label  col-sm-3">菜单名称：</label>
+                                <div class="formControls col-sm-9">
+                                    <input type="text" class="input-text addInput" value="" placeholder="" name="menuName" />
+                                </div>
+                            </div>
+
+                            <div class="row cl">
+                                <label class="form-label  col-sm-3">url：</label>
+                                <div class="formControls col-sm-9">
+                                    <input type="text" class="input-text addInput" value="" placeholder=""  name="url" />
+                                </div>
+                            </div>
+
+                            <div class="row cl" style="display: none">
+                                <label class="form-label  col-sm-3">上级菜单：</label>
+                                <div class="formControls col-sm-9">
+                                    <input type="text" class="input-text addInput" value="" placeholder="" id="addParentId" name="parentId" />
+                                </div>
+                            </div>
+
+
+                            <div class="row cl">
+                                <button onClick="save();" class="btn btn-primary radius" type="button">
+                                    <i class="Hui-iconfont">&#xe617;</i> 新增</button>
+                            </div>
+                        </form>
+
+
+                    </div>
 
                 </td>
             </tr>
@@ -100,20 +144,79 @@
                 $("#parentId").val(treeNode.parentId);
                 $("#menuName").val(treeNode.menuName);
                 $("#url").val(treeNode.url);
+
+                //添加的form隐藏，修改的form显示出来
+                $("#AddForm").hide();
+                $("#editForm").show();
+
+                //当前的 节点id 赋值给 新增的form的上级id
+                $("#addParentId").val(treeNode.menuId);
+
             }
             var zNodes = [];
             $(document).ready(function(){
+                loadZtree();
+            });
+
+            function loadZtree(){
                 let url = '/menu/simpleMenuData';
                 $.get(url,function(menuList){
                     zNodes = menuList;
 
                     var treeObj = $.fn.zTree.init($("#menuTree"), setting, zNodes);
 
-                   // var treeObj = $.fn.zTree.getZTreeObj("tree");
+                    // var treeObj = $.fn.zTree.getZTreeObj("tree");
                     treeObj.expandAll(true);
                 })
+            }
 
-            });
+            /**
+             * 修改的保存
+             */
+            function edit(){
+                $.ajax('/menu/edit',{
+                    data:$("#editForm").serialize(),  // key=value&ke2=vl2,
+                    success:function(data){
+                        if(data.success){
+                            //重新加载zTree
+                            layer.alert('修改成功');
+                            loadZtree();
+                            }
+                    }
+                })
+            }
+
+            /**
+             * 修改的保存
+             */
+            function save(){
+                $.ajax('/menu/save',{
+                    data:$("#AddForm").serialize(),  // key=value&ke2=vl2,
+                    success:function(data){
+                        if(data.success){
+                            //重新加载zTree
+                            layer.alert('添加成功');
+                            loadZtree();
+
+                            //清空添加的form表单
+                            $("#AddForm").find('input').val(null);
+                            // var inputs = $("#AddForm").find('input');
+                            // $(inputs).each(function(index){
+                            //     alert(index);
+                            //
+                            // })
+                        }
+
+                    }
+                })
+            }
+
+
+            function showAddForm(){
+                //判断左侧餐点是否有选中，没有选中不能添加
+                $("#editForm").hide();
+                $("#AddForm").show();
+            }
         </script>
     </body>
 </html>

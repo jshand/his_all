@@ -37,4 +37,25 @@ public class MenuService {
 
         return menuMapper.selectByExample(menuExample);
     }
+
+    /**
+     * 用于修改 菜单项
+     * @param menu
+     * @return
+     */
+    public boolean edit(Menu menu) {
+
+        return menuMapper.updateByPrimaryKeySelective(menu) >0;
+
+    }
+
+    /**
+     * 添加菜单项
+     * @param menu
+     * @return
+     */
+    public boolean save(Menu menu) {
+        return menuMapper.insertSelective(menu) >0;
+
+    }
 }
