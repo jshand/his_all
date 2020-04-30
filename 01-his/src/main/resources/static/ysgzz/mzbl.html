@@ -192,7 +192,12 @@
     function initTree(){
 		$.get('/mzbl/queryMedicalRecord',function(nodes){
 			var t = $("#medicalRecordList");
+
+			//1 使用setting nodes 渲染tree
 			$.fn.zTree.init(t, setting, nodes);
+
+			//2根据节点id 展开节点
+
 		})
 	}
 

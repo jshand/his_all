@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="renderer" content="webkit|ie-comp|ie-stand">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport"
+              content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+        <meta http-equiv="Cache-Control" content="no-siteapp"/>
+        <!--[if lt IE 9]>
+        <script type="text/javascript" src="../lib/html5shiv.js"></script>
+        <script type="text/javascript" src="../lib/respond.min.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css"/>
+        <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css"/>
+        <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css"/>
+        <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin"/>
+        <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css"/>
+        <link rel="stylesheet" href="../lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+        <!--[if IE 6]>
+        <script type="text/javascript" src="../lib/DD_belatedPNG_0.0.8a-min.js"></script>
+        <script>DD_belatedPNG.fix('*');</script>
+        <![endif]-->
+        <title>产品分类</title>
+    </head>
+    <body>
+        <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 医生工作站
+            <span class="c-gray en">&gt;</span>门诊病历 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                                                       href="../javascript:location.replace(location.href);" title="刷新"><i
+                    class="Hui-iconfont">&#xe68f;</i></a></nav>
+        <table class="table">
+            <tr>
+                <td width="200" class="va-t">
+                    <ul id="menuTree" class="ztree"></ul>
+                </td>
+                <td class="va-t">
+
+                   右侧是一个待修改的 菜单form
+
+                </td>
+            </tr>
+        </table>
+        <!--_footer 作为公共模版分离出去-->
+        <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+        <script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+        <script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+        <!--请在下方写此页面业务相关的脚本-->
+        <script type="text/javascript" src="../lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+        <script type="text/javascript">
+
+            // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+            var setting = {
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                }
+            }; //tree 的配置项
+            // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+            var zNodes = [
+                {id:1, pId:0, name: "父节点1",open:true},
+                {id:11, pId:1, name: "子节点1"},
+                {id:12, pId:1, name: "子节点2"}
+            ];
+
+            $(document).ready(function(){
+                $.fn.zTree.init($("#menuTree"), setting, zNodes);
+            });
+        </script>
+    </body>
+</html>
