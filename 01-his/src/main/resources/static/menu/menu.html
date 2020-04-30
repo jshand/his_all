@@ -54,19 +54,34 @@
             var setting = {
                 data: {
                     simpleData: {
-                        enable: true
+                        enable: true,
+                        idKey: "menuId",
+                        pIdKey: "parentId"
+                    },
+                    key: {
+                        name: "menuName"
                     }
                 }
+
             }; //tree 的配置项
             // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
-            var zNodes = [
-                {id:1, pId:0, name: "父节点1",open:true},
-                {id:11, pId:1, name: "子节点1"},
-                {id:12, pId:1, name: "子节点2"}
-            ];
-
+            // var zNodes = [
+            //     {id:1, pId:0, name: "父节点1",open:true},
+            //     {id:11, pId:1, name: "子节点1"},
+            //     {id:12, pId:1, name: "子节点2"}
+            // ];
+            var zNodes = [];
             $(document).ready(function(){
-                $.fn.zTree.init($("#menuTree"), setting, zNodes);
+                let url = '/menu/simpleMenuData';
+                $.get(url,function(menuList){
+                    zNodes = menuList;
+
+                    var treeObj = $.fn.zTree.init($("#menuTree"), setting, zNodes);
+
+                   // var treeObj = $.fn.zTree.getZTreeObj("tree");
+                    treeObj.expandAll(true);
+                })
+
             });
         </script>
     </body>
